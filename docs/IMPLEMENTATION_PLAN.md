@@ -46,33 +46,36 @@ sq ft/sq yd, phone, IST dates) · lib/whatsapp · lib/seo · lib/analytics · li
 - [x] Docs: SPEC, ASSUMPTIONS, IMPLEMENTATION_PLAN
 - [x] Gates: lint ✔ typecheck ✔ tests ✔ build ✔
 
-### Phase 1 — Design system, layout, navbar, footer, homepage ⏳
-Tokens and fonts; `components/ui` primitives; header with mobile menu; footer; floating
-WhatsApp button and mobile contact bar; home page sections (hero search, featured properties,
-new projects, localities, why us, testimonials, blog, post-property CTA, contact strip).
+### Phase 1 — Design system, layout, navbar, footer, homepage ✅
+- [x] Tokens (terracotta/ink/sand, WhatsApp green at AA contrast), Inter + Playfair Display
+- [x] `components/ui` primitives; header + native-`<dialog>` mobile menu; footer from `siteConfig`
+- [x] Floating WhatsApp; generated favicon from business initials; 404 + error boundaries
+- [x] Home: hero search (GET form), shortcuts, featured, localities, projects, why-us, testimonials, CTA, blog, contact strip
 
-### Phase 2 — Property data models & seed data ⏳
-Services layer (`property`, `project`, `locality`, `content`) with serialisable DTOs; verify
-seed coverage; demo badges wired to `isDemo`.
+### Phase 2 — Property data models & seed data ✅
+- [x] Services with serialisable DTOs (BigInt → number): cards, property/project/locality detail, agents, amenities
+- [x] Seed-coverage tests enforcing SPEC §35.2; `npm run db:purge-demo`
 
-### Phase 3 — Property search & filters ⏳
-`/buy`, `/rent` with URL-driven filters, sort and pagination; filter drawer on mobile; empty
-state; shortlist and compare (localStorage).
+### Phase 3 — Property search & filters ✅
+- [x] URL filter parser/serialiser (tested); search service with 14 filters and 6 sorts; denormalised `primaryAreaSqft`
+- [x] `/buy`, `/rent`: auto-apply sidebar, mobile drawer, chips, pagination, empty state with suggestions
+- [x] Shortlist + compare (localStorage), compare tray; explicit robots metadata helper
 
-### Phase 4 — Property detail pages ⏳
-Gallery and lightbox, key facts, price block, amenities, map, agent card, similar properties,
-sold/rented banners, sticky CTAs, `noindex` for demo.
+### Phase 4 — Property detail pages ✅
+- [x] Gallery + lightbox, type-aware key facts, amenities, video facade, OSM/Google map (approximate mode)
+- [x] Agent card, status/demo banners, similar properties, sticky CTAs, mobile contact bar, short links `/property/JP1001`
 
-### Phase 5 — Locality & SEO landing pages ⏳
-`/localities`, `/localities/[slug]`, `/buy/[locality]`, `/rent/[locality]`.
+### Phase 5 — Locality & SEO landing pages ✅
+- [x] `/localities`, `/localities/[slug]` (live stats, nearby by distance), `/buy/[locality]`, `/rent/[locality]`
 
-### Phase 6 — Project detail pages ⏳
-`/projects`, `/projects/[slug]` with configurations table, price range, brochure CTA.
+### Phase 6 — Project detail pages ✅
+- [x] `/projects` (filters), `/projects/[slug]` with configurations table, facts, developer, listings in project
 
-### Phase 7 — Lead generation ⏳
-Enquiry, callback, brochure, site-visit and owner-listing forms (Server Actions + zod),
-honeypot, timing check, rate limiting, dedupe, email notifications, UTM capture, WhatsApp and
-call tracking.
+### Phase 7 — Lead generation ✅
+- [x] Server Actions + zod: enquiry, callback, brochure, contact, site visit (14-day × hourly), owner listing (4-step)
+- [x] Honeypot, timing heuristic, rate limit (5/10 min), optional Turnstile, 24 h dedupe → activity, agent auto-assign
+- [x] Email notifications via SMTP after the response (console fallback); first-touch UTM attribution; analytics events
+- [x] Verified end-to-end in the browser (enquiry, repeat visit request, owner listing)
 
 ### Phase 8 — Admin authentication & dashboard ⏳
 Login, sessions, proxy guard, roles, `admin:create` script, dashboard KPIs.

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowRight, BadgeCheck, Building2, MapPin, ShieldCheck, Star } from "lucide-react";
+import { EnquiryForm } from "@/components/forms/enquiry-form";
+import { LeadPanel } from "@/components/forms/lead-panel";
+import { SiteVisitForm } from "@/components/forms/site-visit-form";
 import { CompareButton } from "@/components/property/compare-controls";
 import { Gallery } from "@/components/property/gallery";
 import { PropertyGrid } from "@/components/property/property-card";
@@ -32,6 +35,7 @@ import { propertyFacts } from "@/lib/property-facts";
 import { pageRobots } from "@/lib/seo/robots";
 import { truncate } from "@/lib/format/labels";
 import { listingPath } from "@/lib/search/filters";
+import { siteVisitMessage } from "@/lib/whatsapp";
 import {
   findSlugByRefCode,
   getPropertyBySlug,
@@ -233,14 +237,42 @@ export default async function PropertyPage({ params }: PageProps<"/property/[slu
             <div id="enquire" className="scroll-mt-24 rounded-card border border-ink-100 bg-white p-5 shadow-card">
               <p className="text-sm text-ink-500">{TRANSACTION_TYPE_BADGE[p.transactionType]}</p>
               <p className="text-2xl font-bold text-ink-950">{priceLabel(p)}</p>
-              <h2 className="mt-4 font-semibold text-ink-950">Interested in this property?</h2>
-              <p className="mt-1 text-sm text-ink-600">Call or WhatsApp us — mention reference {p.refCode}.</p>
-              <div className="mt-4 grid gap-2">
-                <WhatsAppButton contact={contact} message={message} context="property_detail" {...track} size="lg" className="w-full">
-                  WhatsApp us
-                </WhatsAppButton>
-                <CallButton contact={contact} context="property_detail" {...track} size="lg" className="w-full" showNumber />
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <WhatsAppButton contact={contact} message={message} context="property_detail" {...track} className="w-full" />
+                <CallButton contact={contact} context="property_detail" {...track} className="w-full" />
               </div>
+              {unavailable ? null : (
+                <>
+                  <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-wider text-ink-400">
+                    <span className="h-px flex-1 bg-ink-100" />
+                    or send a request
+                    <span className="h-px flex-1 bg-ink-100" />
+                  </div>
+                  <LeadPanel
+                    tabs={[
+                      {
+                        id: "enquiry",
+                        label: "Enquire",
+                        content: (
+                          <EnquiryForm
+                            source="PROPERTY_ENQUIRY"
+                            context={{ propertyId: p.id }}
+                            defaultMessage={`I'm interested in "${p.title}" (Ref ${p.refCode}). Please share more details.`}
+                            whatsappMessage={message}
+                            contact={contact}
+                            trackContext="property_detail"
+                          />
+                        ),
+                      },
+                      {
+                        id: "visit",
+                        label: "Book a visit",
+                        content: <SiteVisitForm context={{ propertyId: p.id }} contact={contact} whatsappMessage={siteVisitMessage(p)} trackContext="property_detail" />,
+                      },
+                    ]}
+                  />
+                </>
+              )}
             </div>
             {p.agent ? (
               <div className="mt-4">

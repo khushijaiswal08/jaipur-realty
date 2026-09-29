@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle2, FileDown, MapPin, ShieldCheck } from "lucide-react";
+import { EnquiryForm } from "@/components/forms/enquiry-form";
+import { LeadPanel } from "@/components/forms/lead-panel";
+import { SiteVisitForm } from "@/components/forms/site-visit-form";
 import { ConfigurationsTable } from "@/components/project/configurations-table";
 import { ProjectCard } from "@/components/project/project-card";
 import { Gallery } from "@/components/property/gallery";
@@ -215,14 +218,39 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             <div id="enquire" className="scroll-mt-24 rounded-card border border-ink-100 bg-white p-5 shadow-card">
               <p className="text-sm text-ink-500">{p.unitSummary}</p>
               <p className="text-2xl font-bold text-ink-950">{priceText(p)}</p>
-              <h2 className="mt-4 font-semibold text-ink-950">Get the brochure & price sheet</h2>
-              <p className="mt-1 text-sm text-ink-600">Ask for floor plans, payment plans and current availability.</p>
-              <div className="mt-4 grid gap-2">
-                <WhatsAppButton contact={contact} message={message} context="project_detail" {...track} size="lg" className="w-full">
-                  WhatsApp us
-                </WhatsAppButton>
-                <CallButton contact={contact} context="project_detail" {...track} size="lg" className="w-full" showNumber />
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <WhatsAppButton contact={contact} message={message} context="project_detail" {...track} className="w-full" />
+                <CallButton contact={contact} context="project_detail" {...track} className="w-full" />
               </div>
+              <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-wider text-ink-400">
+                <span className="h-px flex-1 bg-ink-100" />
+                or send a request
+                <span className="h-px flex-1 bg-ink-100" />
+              </div>
+              <LeadPanel
+                tabs={[
+                  {
+                    id: "brochure",
+                    label: "Get brochure",
+                    content: (
+                      <EnquiryForm
+                        source="BROCHURE_REQUEST"
+                        context={{ projectId: p.id }}
+                        submitLabel="Get brochure & price sheet"
+                        defaultMessage={`Please share the brochure, floor plans and payment plan for ${p.name}.`}
+                        whatsappMessage={message}
+                        contact={contact}
+                        trackContext="project_detail"
+                      />
+                    ),
+                  },
+                  {
+                    id: "visit",
+                    label: "Book a visit",
+                    content: <SiteVisitForm context={{ projectId: p.id }} contact={contact} whatsappMessage={message} trackContext="project_detail" />,
+                  },
+                ]}
+              />
             </div>
             <p className="mt-4 text-xs leading-relaxed text-ink-500">
               Project details, images and prices are indicative. Verify RERA registration, approvals and the agreement with a qualified

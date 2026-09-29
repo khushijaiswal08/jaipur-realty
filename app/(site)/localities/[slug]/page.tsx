@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, CheckCircle2, Navigation } from "lucide-react";
+import { EnquiryForm } from "@/components/forms/enquiry-form";
 import { LocalityStats } from "@/components/locality/locality-stats";
 import { ProjectCard } from "@/components/project/project-card";
 import { PropertyGrid } from "@/components/property/property-card";
@@ -147,10 +148,19 @@ export default async function LocalityPage({ params }: PageProps<"/localities/[s
           <div className="rounded-card border border-ink-100 bg-white p-5 shadow-card">
             <h2 className="font-semibold text-ink-950">Looking in {l.name}?</h2>
             <p className="mt-1 text-sm text-ink-600">Tell us your budget — we&apos;ll share options, including ones not listed online yet.</p>
-            <div className="mt-4 grid gap-2">
-              <WhatsAppButton context="locality_page" message={message} size="lg" className="w-full" />
-              <CallButton context="locality_page" size="lg" className="w-full" showNumber />
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <WhatsAppButton context="locality_page" message={message} className="w-full" />
+              <CallButton context="locality_page" className="w-full" />
             </div>
+            <p className="mb-3 mt-5 text-sm font-semibold text-ink-950">Or request a callback</p>
+            <EnquiryForm
+              source="CALLBACK_REQUEST"
+              fields="minimal"
+              context={{ localityId: l.id }}
+              submitLabel="Call me back"
+              whatsappMessage={message}
+              trackContext="locality_page"
+            />
           </div>
           {nearby.length ? (
             <div className="rounded-card border border-ink-100 bg-white p-5 shadow-card">

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AttributionCapture } from "@/components/analytics/attribution-capture";
 import { FloatingWhatsApp } from "@/components/layout/floating-whatsapp";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -22,6 +23,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
       <SiteFooter localities={localities} />
       <FloatingWhatsApp />
       <CompareTray />
+      <AttributionCapture />
     </>
   );
 }

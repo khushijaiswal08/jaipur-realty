@@ -3,11 +3,19 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   resolve: {
-    alias: { "@": fileURLToPath(new URL(".", import.meta.url)) },
+    alias: {
+      "@": fileURLToPath(new URL(".", import.meta.url)),
+      "server-only": fileURLToPath(new URL("./test/empty-module.ts", import.meta.url)),
+    },
   },
   test: {
     include: ["**/*.test.ts"],
     exclude: ["node_modules/**", ".next/**", "generated/**"],
     environment: "node",
+    env: {
+      // Deterministic secrets for modules that read server config.
+      AUTH_SECRET: "test-secret-test-secret-test-secret-123",
+      IP_HASH_SALT: "test-salt-test-salt",
+    },
   },
 });
