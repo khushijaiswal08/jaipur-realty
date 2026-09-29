@@ -19,6 +19,7 @@ import {
   Newspaper,
   Quote,
   ShieldUser,
+  SlidersHorizontal,
   Users,
   X,
   type LucideIcon,
@@ -42,6 +43,7 @@ const ICONS: Record<string, LucideIcon> = {
   quote: Quote,
   "shield-user": ShieldUser,
   history: History,
+  "sliders-horizontal": SlidersHorizontal,
 };
 
 interface ShellProps {

@@ -130,6 +130,7 @@ before launch.** Admins can add more localities later.
 |---|---|
 | `/` | Home (§6) |
 | `/buy`, `/rent` | Listings by transaction type (§7) |
+| `/properties` | Home-search entry point; redirects to the canonical results page for the chosen tab (Buy / Rent / Commercial / Projects) |
 | `/buy/[locality]`, `/rent/[locality]` | Locality-scoped listings (SEO landing) |
 | `/property/[slug]` | Property detail (§9). The slug ends with the lowercased `refCode`. |
 | `/projects`, `/projects/[slug]` | Projects (§10) |
@@ -148,15 +149,18 @@ Other filters (type, BHK, budget and so on) are query parameters on the listing 
 ## 6. Home page
 
 In order:
-1. Hero with search: Buy/Rent toggle, locality, property type, budget.
-2. Featured properties (up to 8, `isFeatured`).
-3. New projects (up to 4).
-4. Popular localities (the 12 from §3).
-5. "Why choose us": trust points from config or CMS. Never invented statistics (§22).
-6. Testimonials. Demo ones MUST carry a visible "Demo testimonial" label (§35).
-7. Latest blog posts (3).
-8. "Post your property" CTA.
-9. Contact strip: call, WhatsApp, office address, all from §34.
+1. Hero with search panel: tabs Buy / Rent / Commercial / Projects; fields Location, Type,
+   Budget, BHK (BHK hidden for Commercial). Submits to `/properties`. Below it, popular
+   searches generated from live inventory.
+2. Trust metrics from `SiteSetting` (live counts or business-supplied values; never invented, §22).
+3. Featured properties (up to 8, `isFeatured`).
+4. Property categories with live counts.
+5. Popular Jaipur locations (featured localities from §3).
+6. New projects (up to 4).
+7. "Why choose us" trust points.
+8. Testimonials. Demo ones MUST carry a visible "Demo testimonial" label (§35).
+9. Latest blog posts (3).
+10. CTA: "Post your property" plus call / WhatsApp / enquiry, all from §34.
 
 ## 7. Property listing page
 
@@ -924,7 +928,13 @@ iOS zoom).
   variables in `app/globals.css`). Components never use raw hex values.
 - Core components in `components/ui`: Button, Badge (Demo / Verified / Featured / RERA /
   Under offer), Card, Input, Select, Checkbox, Dialog, Sheet, Tabs, Skeleton, Pagination.
-- Brand colours and logo are open questions (§62). Use a neutral palette until then.
+- Palette: white background, deep navy primary, warm gold accent, soft grey surfaces, WhatsApp
+  green. Headings in Playfair Display, body in Manrope. The logo is still an open question (§62).
+- Layout: sticky header (shadow once scrolled) with Call + WhatsApp on the right and a
+  hamburger menu below desktop width; floating WhatsApp button on tablet/desktop; sticky
+  Call / WhatsApp bar on phones (detail pages replace it with a listing-specific bar).
+- Shared components: PropertyCard, ProjectCard, LocationCard, SearchBar, EmptyState, Breadcrumb,
+  CallButton, WhatsAppButton.
 
 ## 41. Admin panel overview
 

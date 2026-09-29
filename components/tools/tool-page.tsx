@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container } from "@/components/ui/layout-primitives";
 import { cn } from "@/lib/utils";
 
@@ -13,7 +13,7 @@ export const TOOLS = [
 export function ToolPage({ title, intro, current, children }: { title: string; intro: string; current: string; children: ReactNode }) {
   return (
     <Container className="py-8 sm:py-12">
-      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Tools", href: "/tools" }, { label: title }]} />
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Tools", href: "/tools" }, { label: title }]} />
       <h1 className="mt-4 font-display text-3xl text-ink-950 sm:text-4xl">{title}</h1>
       <p className="mt-2 max-w-2xl text-ink-600">{intro}</p>
       <div className="mt-8 rounded-card border border-ink-100 bg-white p-5 shadow-card sm:p-8">{children}</div>

@@ -40,11 +40,50 @@ export const ABOUT_COPY = {
   ],
 } as const;
 
-export const CATEGORY_SHORTCUTS = [
-  { label: "Apartments", href: "/buy?type=apartment", icon: "building" },
-  { label: "Independent houses", href: "/buy?type=independent-house", icon: "house" },
-  { label: "Villas", href: "/buy?type=villa", icon: "castle" },
-  { label: "Plots", href: "/buy?category=land", icon: "land-plot" },
-  { label: "Commercial", href: "/buy?category=commercial", icon: "store" },
-  { label: "For rent", href: "/rent", icon: "key-round" },
+/**
+ * Home "Browse by property type" tiles. Each tile's count is computed from the database with
+ * exactly the same filter as its link (services/home.service.ts), so the number always matches
+ * what the visitor sees after clicking.
+ */
+export const PROPERTY_CATEGORY_TILES = [
+  {
+    key: "apartments",
+    label: "Apartments & flats",
+    description: "Flats, builder floors and penthouses",
+    icon: "building",
+    transactionType: "SALE",
+    types: ["APARTMENT", "BUILDER_FLOOR", "PENTHOUSE", "STUDIO"],
+  },
+  {
+    key: "houses",
+    label: "Houses & villas",
+    description: "Independent houses, villas and farmhouses",
+    icon: "house",
+    transactionType: "SALE",
+    types: ["INDEPENDENT_HOUSE", "VILLA", "FARMHOUSE"],
+  },
+  {
+    key: "plots",
+    label: "Plots & land",
+    description: "Residential plots and land parcels",
+    icon: "land-plot",
+    transactionType: "SALE",
+    category: "LAND",
+  },
+  {
+    key: "commercial",
+    label: "Commercial",
+    description: "Offices, shops, showrooms and warehouses",
+    icon: "store",
+    transactionType: "SALE",
+    category: "COMMERCIAL",
+  },
+  {
+    key: "rent",
+    label: "Homes for rent",
+    description: "Furnished and unfurnished rentals",
+    icon: "key-round",
+    transactionType: "RENT",
+    category: "RESIDENTIAL",
+  },
 ] as const;

@@ -3,7 +3,7 @@ import { FaqList } from "@/components/shared/detail-sections";
 import { WhatsAppButton } from "@/components/shared/contact-buttons";
 import { JsonLd } from "@/components/seo/json-ld";
 import { faqJsonLd } from "@/lib/seo/jsonld";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container } from "@/components/ui/layout-primitives";
 import { FAQ_SCOPE_LABELS } from "@/lib/constants/enums";
 import { pageRobots } from "@/lib/seo/robots";
@@ -26,7 +26,7 @@ export default async function FaqPage() {
   return (
     <Container className="max-w-3xl py-8 sm:py-12">
       <JsonLd data={faqJsonLd(faqs)} />
-      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "FAQs" }]} />
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "FAQs" }]} />
       <h1 className="mt-4 font-display text-3xl text-ink-950 sm:text-4xl">Frequently asked questions</h1>
       <div className="mt-8 space-y-10">
         {[...groups.entries()].map(([scope, items]) => (

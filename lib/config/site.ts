@@ -31,7 +31,16 @@ export const PLACEHOLDER_VALUES = {
   name: "Demo Realty Jaipur",
   phoneE164: "+919000000000",
   emailDomain: "@example.com",
+  addressLine1: "Office No. 0, Demo Business Centre",
 } as const;
+
+/** Which business details still hold the .env.example placeholders (shown in the footer notice). */
+const placeholderFields = [
+  name === PLACEHOLDER_VALUES.name ? "business name" : null,
+  phone === PLACEHOLDER_VALUES.phoneE164 ? "phone number" : null,
+  email.endsWith(PLACEHOLDER_VALUES.emailDomain) ? "email" : null,
+  clean(process.env.NEXT_PUBLIC_BUSINESS_ADDRESS_LINE1) === PLACEHOLDER_VALUES.addressLine1 ? "office address" : null,
+].filter((f): f is string => f !== null);
 
 export const siteConfig = {
   name,
@@ -80,11 +89,10 @@ export const siteConfig = {
     googleApiKey: googleMapsKey,
   },
   turnstileSiteKey: clean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY),
+  /** Placeholder business details still in use, e.g. ["business name", "office address"]. */
+  placeholderFields,
   /** True while any placeholder business detail from .env.example is still in use. */
-  usesPlaceholders:
-    name === PLACEHOLDER_VALUES.name ||
-    phone === PLACEHOLDER_VALUES.phoneE164 ||
-    email.endsWith(PLACEHOLDER_VALUES.emailDomain),
+  usesPlaceholders: placeholderFields.length > 0,
 } as const;
 
 export type SiteConfig = typeof siteConfig;

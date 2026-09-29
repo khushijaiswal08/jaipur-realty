@@ -26,7 +26,7 @@ import { VideoEmbed } from "@/components/shared/video-embed";
 import { JsonLd } from "@/components/seo/json-ld";
 import { faqJsonLd, projectJsonLd } from "@/lib/seo/jsonld";
 import { Badge, DemoBadge } from "@/components/ui/badge";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { buttonVariants } from "@/components/ui/button";
 import { Container, Section, SectionHeading } from "@/components/ui/layout-primitives";
 import { absoluteUrl } from "@/lib/config";
@@ -105,7 +105,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       <JsonLd data={[projectJsonLd(p), p.isDemo ? null : faqJsonLd(p.faqs)]} />
       <ViewTracker projectId={p.id} />
       <Container className="py-6 sm:py-8">
-        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Projects", href: "/projects" }, { label: p.name }]} />
+        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Projects", href: "/projects" }, { label: p.name }]} />
 
         {p.isDemo ? (
           <div className="mt-4">
@@ -175,7 +175,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
               <DetailSection id="highlights" title="Highlights">
                 <ul className="grid gap-3 sm:grid-cols-2">
                   {p.highlights.map((h) => (
-                    <li key={h} className="flex gap-2.5 rounded-xl bg-sand-100 px-4 py-3 text-sm font-medium text-ink-800">
+                    <li key={h} className="flex gap-2.5 rounded-xl bg-surface-100 px-4 py-3 text-sm font-medium text-ink-800">
                       <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-success-600" aria-hidden="true" />
                       {h}
                     </li>

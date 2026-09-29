@@ -93,7 +93,7 @@ export function ImageManager({ target, targetId, images, actions }: { target: "p
               <div className="relative aspect-[4/3] bg-ink-50">
                 <SmartImage src={img.url} alt={img.alt} fill sizes="(min-width: 1280px) 25vw, 50vw" className="object-cover" />
                 {img.isCover ? (
-                  <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-gold-100 px-2 py-0.5 text-xs font-semibold text-gold-600">
+                  <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-gold-100 px-2 py-0.5 text-xs font-semibold text-gold-800">
                     <Star className="size-3" aria-hidden="true" /> Cover
                   </span>
                 ) : null}

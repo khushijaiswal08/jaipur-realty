@@ -24,7 +24,7 @@ export function BrandMarkImage({ size, radius }: { size: number; radius: number 
         alignItems: "center",
         justifyContent: "center",
         background: THEME.brand600,
-        color: "#ffffff",
+        color: THEME.gold300,
         borderRadius: radius,
         fontSize: size * 0.46,
         fontWeight: 700,

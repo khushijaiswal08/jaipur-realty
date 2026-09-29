@@ -44,7 +44,7 @@ export function CompareTray() {
   return (
     <div className="fixed inset-x-0 bottom-4 z-30 flex justify-center px-4 max-md:bottom-20">
       <div className="flex items-center gap-3 rounded-full bg-ink-950 py-2 pl-5 pr-2 text-sm text-white shadow-card-hover">
-        <GitCompareArrows className="size-4 text-brand-300" aria-hidden="true" />
+        <GitCompareArrows className="size-4 text-gold-300" aria-hidden="true" />
         <span>
           {ids.length} of {compareStore.max} selected
         </span>

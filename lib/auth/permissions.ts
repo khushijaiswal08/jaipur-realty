@@ -9,6 +9,7 @@ export const CAPABILITIES = {
   manageLeads: ["SUPER_ADMIN", "ADMIN"],
   exportLeads: ["SUPER_ADMIN", "ADMIN"],
   manageContent: ["SUPER_ADMIN", "ADMIN", "EDITOR"],
+  manageSettings: ["SUPER_ADMIN", "ADMIN"],
 } as const satisfies Record<string, readonly AdminRole[]>;
 
 export type Capability = keyof typeof CAPABILITIES;

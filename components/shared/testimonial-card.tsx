@@ -7,7 +7,7 @@ export function TestimonialCard({ testimonial: t, className }: { testimonial: Te
   return (
     <figure className={cn("flex h-full flex-col rounded-card border border-ink-100 bg-white p-6 shadow-card", className)}>
       <div className="flex items-center justify-between">
-        <Quote className="size-8 text-brand-200" aria-hidden="true" />
+        <Quote className="size-8 text-gold-400" aria-hidden="true" />
         {t.isDemo ? <DemoBadge label="Demo testimonial" /> : null}
       </div>
       {t.rating ? (
@@ -15,7 +15,7 @@ export function TestimonialCard({ testimonial: t, className }: { testimonial: Te
           {Array.from({ length: 5 }, (_, i) => (
             <Star
               key={i}
-              className={cn("size-4", i < t.rating! ? "fill-gold-600 text-gold-600" : "text-ink-200")}
+              className={cn("size-4", i < t.rating! ? "fill-gold-500 text-gold-500" : "text-ink-200")}
               aria-hidden="true"
             />
           ))}

@@ -27,7 +27,7 @@ import { VideoEmbed } from "@/components/shared/video-embed";
 import { JsonLd } from "@/components/seo/json-ld";
 import { faqJsonLd, propertyJsonLd } from "@/lib/seo/jsonld";
 import { Badge, DemoBadge } from "@/components/ui/badge";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container, SectionHeading } from "@/components/ui/layout-primitives";
 import { absoluteUrl } from "@/lib/config";
 import { resolveContact } from "@/lib/contact";
@@ -110,7 +110,7 @@ export default async function PropertyPage({ params }: PageProps<"/property/[slu
       <JsonLd data={[propertyJsonLd(p), p.isDemo ? null : faqJsonLd(p.faqs)]} />
       <ViewTracker propertyId={p.id} />
       <Container className="py-6 sm:py-8">
-        <Breadcrumbs
+        <Breadcrumb
           items={[
             { label: "Home", href: "/" },
             { label: p.transactionType === "SALE" ? "Buy" : "Rent", href: listPath },

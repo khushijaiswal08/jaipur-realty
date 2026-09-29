@@ -62,7 +62,7 @@ export function AmenitiesList({ amenities }: { amenities: AmenityDTO[] }) {
           <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink-500">{AMENITY_CATEGORY_LABELS[category]}</h3>
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {items.map((a) => (
-              <li key={a.slug} className="flex items-center gap-2.5 rounded-xl bg-sand-100 px-3 py-2.5 text-sm font-medium text-ink-800">
+              <li key={a.slug} className="flex items-center gap-2.5 rounded-xl bg-surface-100 px-3 py-2.5 text-sm font-medium text-ink-800">
                 <NamedIcon name={a.icon} className="size-4.5 shrink-0 text-brand-700" />
                 {a.name}
               </li>

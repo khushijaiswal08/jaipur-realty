@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Analytics } from "@/components/analytics/analytics";
 import { AttributionCapture } from "@/components/analytics/attribution-capture";
 import { FloatingWhatsApp } from "@/components/layout/floating-whatsapp";
+import { SiteMobileContactBar } from "@/components/layout/mobile-contact-bar";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { CompareTray } from "@/components/property/compare-controls";
@@ -26,6 +27,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
       </main>
       <SiteFooter localities={localities} />
       <FloatingWhatsApp />
+      <SiteMobileContactBar />
       <CompareTray />
       <AttributionCapture />
       <Analytics />

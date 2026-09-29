@@ -15,9 +15,9 @@ codebase hardcodes them. Changing a `NEXT_PUBLIC_*` value requires a rebuild.
 |---|---|---|---|
 | Business name | `NEXT_PUBLIC_BUSINESS_NAME` | `Demo Realty Jaipur` | Used in header, footer, titles, emails, WhatsApp messages. |
 | Logo | `NEXT_PUBLIC_BUSINESS_LOGO_URL` | _(empty → text wordmark)_ | Put the file in `public/brand/` and set e.g. `/brand/logo.svg`. |
-| Phone | `NEXT_PUBLIC_BUSINESS_PHONE` | `+91 90000 00000` | Obviously fake; call buttons dial it until replaced. |
-| WhatsApp | `NEXT_PUBLIC_BUSINESS_WHATSAPP` | _(empty → uses phone)_ | Must be a mobile number. |
-| Email | `NEXT_PUBLIC_BUSINESS_EMAIL` | `hello@example.com` | `example.com` is reserved and never delivers. |
+| Phone | `NEXT_PUBLIC_BUSINESS_PHONE` | `+91 90000 00000` | **Real value provided (2026-09-29)** and set in the local `.env`. Copy it to the production `.env`. |
+| WhatsApp | `NEXT_PUBLIC_BUSINESS_WHATSAPP` | _(empty → uses phone)_ | **Real value provided** (same mobile as the phone). Must be a mobile number. |
+| Email | `NEXT_PUBLIC_BUSINESS_EMAIL` | `hello@example.com` | **Real value provided** and set in the local `.env`; also used for `LEAD_NOTIFICATION_EMAIL`. |
 | Office address | `NEXT_PUBLIC_BUSINESS_ADDRESS_LINE1/2`, `_CITY`, `_STATE`, `_PINCODE` | `Office No. 0, Demo Business Centre`, Vaishali Nagar, Jaipur 302021 | |
 | Office location | `NEXT_PUBLIC_BUSINESS_LAT/LNG` | Vaishali Nagar centroid | Used for the contact-page map and LocalBusiness schema. |
 | Office hours | `NEXT_PUBLIC_BUSINESS_HOURS` | `Mon–Sat 10:00–19:00` | |
@@ -85,7 +85,10 @@ phone or email is still set. While placeholders are in use, the footer also show
 | Deployment | Plain `next start` on a VPS, or the standalone Docker image; Caddy for HTTPS | See docs/DEPLOYMENT.md. Uploads directory configurable via `STORAGE_LOCAL_DIR`. |
 | Security headers | CSP allowlisting GA4/GTM, Meta, Clarity, Turnstile, OSM/Google Maps and youtube-nocookie; HSTS only when `NEXT_PUBLIC_SITE_URL` is https in production | Add hosts in `next.config.ts` if you embed other services. |
 | Language | English UI; Indian number formatting; IST for all dates | Hindi can be added later. |
-| Brand colours | Terracotta (Jaipur) primary + deep navy, defined once in `app/globals.css` | Swap tokens when a brand palette exists. |
+| Brand colours | White page, deep navy primary (`brand-*`), warm gold accent (`gold-*`), soft grey surfaces (`surface-*`), WhatsApp green — defined once in `app/globals.css` | Palette requested 2026-09-29. Gold is for accents only; text on white uses `gold-700`+ for contrast. |
+| Typography | Playfair Display (headings) + Manrope (body) via `next/font` | Aimed at an editorial, property-brochure feel rather than a SaaS dashboard. |
+| Trust metrics | Stored in `SiteSetting` (`home.trustMetrics`), edited in Admin → Site settings. Default = live database counts only | Never invented numbers (SPEC §22). The schema's `Configuration` model means project unit types (2 BHK, 3 BHK…), so site settings got their own table. |
+| Search entry URL | Home search submits to `/properties?tab=…`, which redirects to the canonical results page (`/buy`, `/rent`, `/buy/[locality]`, `/projects`) | Keeps one indexable URL per result set. |
 | Stamp duty rates | Indicative constants with an "effective from" date and a disclaimer | Update `lib/constants/tools.ts` when rates change. |
 
 ## 5. Local development environment (this machine)

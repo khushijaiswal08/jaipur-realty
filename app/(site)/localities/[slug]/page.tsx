@@ -12,7 +12,7 @@ import { LocationMap } from "@/components/shared/location-map";
 import { SmartImage } from "@/components/shared/smart-image";
 import { JsonLd } from "@/components/seo/json-ld";
 import { faqJsonLd, localityJsonLd } from "@/lib/seo/jsonld";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { buttonVariants } from "@/components/ui/button";
 import { Container, Section, SectionHeading } from "@/components/ui/layout-primitives";
 import { absoluteUrl } from "@/lib/config";
@@ -72,7 +72,7 @@ export default async function LocalityPage({ params }: PageProps<"/localities/[s
         <SmartImage src={l.image.url} alt="" fill preload sizes="100vw" className="object-cover opacity-35" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/85 to-ink-950/40" aria-hidden="true" />
         <Container className="relative py-10 sm:py-14">
-          <Breadcrumbs tone="dark" items={[{ label: "Home", href: "/" }, { label: "Localities", href: "/localities" }, { label: l.name }]} />
+          <Breadcrumb tone="dark" items={[{ label: "Home", href: "/" }, { label: "Localities", href: "/localities" }, { label: l.name }]} />
           <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-brand-300">
             {[l.zone ? `${l.zone} Jaipur` : "Jaipur", l.pincode].filter(Boolean).join(" · ")}
           </p>
@@ -202,7 +202,7 @@ export default async function LocalityPage({ params }: PageProps<"/localities/[s
       ) : null}
 
       {projects.length ? (
-        <Section className="bg-sand-100">
+        <Section className="bg-surface-100">
           <Container>
             <SectionHeading title={`Projects in ${l.name}`} action={{ href: `/projects?locality=${l.slug}`, label: "All projects" }} />
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

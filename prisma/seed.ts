@@ -10,6 +10,7 @@ import type { ImageKind, PropertyType } from "../generated/prisma/enums";
 import { PROPERTY_TYPE_CATEGORY } from "../lib/constants/enums";
 import { db } from "../lib/db";
 import { computePricePerSqft, getPrimaryArea } from "../lib/format/area";
+import { DEFAULT_TRUST_METRICS, TRUST_METRICS_KEY } from "../lib/settings/trust-metrics";
 import { propertySlug, readingTimeMinutes } from "../lib/utils";
 import { AMENITIES } from "./seed-data/amenities";
 import { BLOG_CATEGORIES, DEMO_AGENT, DEMO_POSTS, DEMO_TESTIMONIALS, GENERAL_FAQS } from "./seed-data/content";
@@ -331,6 +332,13 @@ async function main() {
       await db.faq.create({ data: { ...f, sortOrder: i, isPublished: true } });
     }
   }
+
+  // ── Site settings: create defaults only, never overwrite what an admin saved ───
+  await db.siteSetting.upsert({
+    where: { key: TRUST_METRICS_KEY },
+    update: {},
+    create: { key: TRUST_METRICS_KEY, value: DEFAULT_TRUST_METRICS },
+  });
 
   const counts = {
     localities: await db.locality.count(),

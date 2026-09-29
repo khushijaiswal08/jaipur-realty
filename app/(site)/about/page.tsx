@@ -4,7 +4,7 @@ import { CallButton, WhatsAppButton } from "@/components/shared/contact-buttons"
 import { NamedIcon } from "@/components/shared/named-icon";
 import { SmartImage } from "@/components/shared/smart-image";
 import { DemoBadge } from "@/components/ui/badge";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { buttonVariants } from "@/components/ui/button";
 import { Container, Section, SectionHeading } from "@/components/ui/layout-primitives";
 import { siteConfig } from "@/lib/config";
@@ -27,7 +27,7 @@ export default async function AboutPage() {
     <>
       <div className="bg-ink-950 bg-arches text-white">
         <Container className="py-12 sm:py-16">
-          <Breadcrumbs tone="dark" items={[{ label: "Home", href: "/" }, { label: "About" }]} />
+          <Breadcrumb tone="dark" items={[{ label: "Home", href: "/" }, { label: "About" }]} />
           <h1 className="mt-4 max-w-3xl font-display text-4xl leading-tight sm:text-5xl">{ABOUT_COPY.title}</h1>
           <p className="mt-4 max-w-2xl text-lg text-ink-200">{ABOUT_COPY.intro}</p>
         </Container>
@@ -59,7 +59,7 @@ export default async function AboutPage() {
             <SectionHeading title="Our team" description="Talk to a consultant who knows your neighbourhood." />
             <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {agents.map((a) => (
-                <li key={a.id} className="rounded-card border border-ink-100 bg-sand-50 p-5 text-center">
+                <li key={a.id} className="rounded-card border border-ink-100 bg-surface-50 p-5 text-center">
                   <div className="relative mx-auto size-24 overflow-hidden rounded-full bg-ink-100">
                     <SmartImage src={a.photo.url} alt={a.photo.alt} fill sizes="96px" className="object-cover" />
                   </div>

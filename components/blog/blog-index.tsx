@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Newspaper } from "lucide-react";
-import { Breadcrumbs, type Crumb } from "@/components/ui/breadcrumbs";
+import { Breadcrumb, type Crumb } from "@/components/ui/breadcrumb";
 import { Container, EmptyState } from "@/components/ui/layout-primitives";
 import { Pagination } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,7 @@ export function BlogIndex({ title, description, breadcrumbs, posts, page, totalP
     <>
       <div className="border-b border-ink-100 bg-white">
         <Container className="py-8 sm:py-10">
-          <Breadcrumbs items={breadcrumbs} />
+          <Breadcrumb items={breadcrumbs} />
           <h1 className="mt-3 font-display text-3xl leading-tight text-ink-950 sm:text-4xl">{title}</h1>
           <p className="mt-2 max-w-2xl text-ink-600">{description}</p>
           <nav aria-label="Categories" className="mt-6 flex flex-wrap gap-2">

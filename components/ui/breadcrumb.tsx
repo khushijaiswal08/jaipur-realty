@@ -10,7 +10,7 @@ export interface Crumb {
 }
 
 /** Visual breadcrumbs plus the matching BreadcrumbList JSON-LD (SPEC §32). */
-export function Breadcrumbs({ items, className, tone = "light" }: { items: Crumb[]; className?: string; tone?: "light" | "dark" }) {
+export function Breadcrumb({ items, className, tone = "light" }: { items: Crumb[]; className?: string; tone?: "light" | "dark" }) {
   return (
     <nav aria-label="Breadcrumb" className={cn("text-sm", className)}>
       <JsonLd data={breadcrumbJsonLd(items)} />

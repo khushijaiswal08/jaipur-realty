@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { TOOLS } from "@/components/tools/tool-page";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container } from "@/components/ui/layout-primitives";
 import { pageRobots } from "@/lib/seo/robots";
 
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function ToolsPage() {
   return (
     <Container className="py-8 sm:py-12">
-      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Tools" }]} />
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Tools" }]} />
       <h1 className="mt-4 font-display text-3xl text-ink-950 sm:text-4xl">Property tools</h1>
       <ul className="mt-8 grid gap-5 md:grid-cols-3">
         {TOOLS.map((t) => (

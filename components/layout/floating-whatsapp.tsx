@@ -2,8 +2,8 @@ import { WhatsAppIcon } from "@/components/shared/icons";
 import { whatsAppHref } from "@/lib/contact";
 
 /**
- * Bottom-right WhatsApp shortcut (SPEC §25). On phones it hides itself (CSS :has() rule in
- * globals.css) when a page renders the sticky mobile contact bar, so the two never overlap.
+ * Bottom-right WhatsApp shortcut (SPEC §25) for tablets and desktops. Phones get the sticky
+ * Call / WhatsApp bar instead, so the two never overlap.
  */
 export function FloatingWhatsApp() {
   return (
@@ -15,7 +15,7 @@ export function FloatingWhatsApp() {
       data-track="whatsapp_click"
       data-track-context="floating_button"
       data-floating-whatsapp=""
-      className="fixed bottom-5 right-5 z-30 flex items-center justify-center rounded-full bg-whatsapp p-3.5 text-white shadow-card-hover transition-transform hover:scale-105 hover:bg-whatsapp-hover"
+      className="fixed bottom-6 right-6 z-30 hidden items-center justify-center rounded-full bg-whatsapp p-3.5 text-white shadow-card-hover ring-4 ring-white transition-transform hover:scale-105 hover:bg-whatsapp-hover md:flex"
     >
       <WhatsAppIcon className="size-7" />
     </a>

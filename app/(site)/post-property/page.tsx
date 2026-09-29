@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { BadgeCheck, MessageCircle, PhoneCall, ShieldCheck } from "lucide-react";
 import { OwnerListingForm } from "@/components/forms/owner-listing-form";
 import { WhatsAppButton } from "@/components/shared/contact-buttons";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container } from "@/components/ui/layout-primitives";
 import { pageRobots } from "@/lib/seo/robots";
 import { ownerListingMessage } from "@/lib/whatsapp";
@@ -25,7 +25,7 @@ export default async function PostPropertyPage() {
   const localities = await getLocalityLinks();
   return (
     <Container className="py-8 sm:py-12">
-      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Post your property" }]} />
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Post your property" }]} />
       <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1fr)_28rem]">
         <div>
           <h1 className="font-display text-3xl leading-tight text-ink-950 sm:text-4xl">Sell or rent out your property in Jaipur</h1>

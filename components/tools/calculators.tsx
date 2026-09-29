@@ -11,7 +11,7 @@ import { calculateEmi, calculateStampDuty } from "@/lib/tools";
 
 function Stat({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) {
   return (
-    <div className={strong ? "rounded-xl bg-brand-600 p-4 text-white" : "rounded-xl bg-sand-100 p-4"}>
+    <div className={strong ? "rounded-xl bg-brand-600 p-4 text-white" : "rounded-xl bg-surface-100 p-4"}>
       <p className={strong ? "text-sm text-brand-100" : "text-sm text-ink-500"}>{label}</p>
       <p className="mt-1 text-2xl font-bold">{value}</p>
     </div>
@@ -74,7 +74,7 @@ export function EmiCalculator() {
             </div>
           </>
         ) : (
-          <p className="rounded-xl bg-sand-100 p-4 text-sm text-ink-600">Enter a loan amount to see your EMI.</p>
+          <p className="rounded-xl bg-surface-100 p-4 text-sm text-ink-600">Enter a loan amount to see your EMI.</p>
         )}
         <p className="text-xs text-ink-500">Indicative only. Your lender&apos;s rate, fees and schedule determine the actual EMI.</p>
       </div>

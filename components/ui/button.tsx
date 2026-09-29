@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "subtle" | "whatsapp" | "danger" | "link";
+export type ButtonVariant = "primary" | "accent" | "secondary" | "outline" | "ghost" | "subtle" | "whatsapp" | "danger" | "link";
 export type ButtonSize = "sm" | "md" | "lg" | "icon";
 
 const base =
@@ -10,8 +10,10 @@ const base =
 
 const variants: Record<ButtonVariant, string> = {
   primary: "bg-brand-600 text-white shadow-sm hover:bg-brand-700 focus-visible:outline-brand-600",
+  /** Gold call-to-action for premium moments (hero, CTA bands). Dark text keeps AA contrast. */
+  accent: "bg-gold-500 text-brand-950 shadow-sm hover:bg-gold-400 focus-visible:outline-gold-500",
   secondary: "bg-ink-900 text-white shadow-sm hover:bg-ink-800 focus-visible:outline-ink-900",
-  outline: "border border-ink-200 bg-white text-ink-900 hover:border-ink-300 hover:bg-ink-50",
+  outline: "border border-ink-200 bg-white text-brand-700 hover:border-brand-300 hover:bg-brand-50",
   ghost: "text-ink-800 hover:bg-ink-50",
   subtle: "bg-brand-50 text-brand-800 hover:bg-brand-100",
   whatsapp: "bg-whatsapp text-white shadow-sm hover:bg-whatsapp-hover focus-visible:outline-whatsapp",

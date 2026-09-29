@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SearchX } from "lucide-react";
 import { FloatingWhatsApp } from "@/components/layout/floating-whatsapp";
+import { SiteMobileContactBar } from "@/components/layout/mobile-contact-bar";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { WhatsAppButton } from "@/components/shared/contact-buttons";
@@ -53,6 +54,7 @@ export default async function NotFound() {
       </main>
       <SiteFooter localities={localities} />
       <FloatingWhatsApp />
+      <SiteMobileContactBar />
     </>
   );
 }

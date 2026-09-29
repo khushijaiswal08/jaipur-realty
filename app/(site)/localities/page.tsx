@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { LocalityCard } from "@/components/locality/locality-card";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { LocationCard } from "@/components/locality/location-card";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container } from "@/components/ui/layout-primitives";
 import { pageRobots } from "@/lib/seo/robots";
 import { getLocalityCards, type LocalityCardDTO } from "@/services/locality.service";
@@ -27,7 +27,7 @@ export default async function LocalitiesPage() {
     <>
       <div className="border-b border-ink-100 bg-white">
         <Container className="py-8 sm:py-10">
-          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Localities" }]} />
+          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Localities" }]} />
           <h1 className="mt-3 font-display text-3xl leading-tight text-ink-950 sm:text-4xl">Explore Jaipur localities</h1>
           <p className="mt-3 max-w-3xl text-ink-600">
             Every neighbourhood has its own character, budget and commute. Use these guides to compare indicative rates, connectivity
@@ -43,7 +43,7 @@ export default async function LocalitiesPage() {
             </h2>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {items.map((l) => (
-                <LocalityCard key={l.id} locality={l} />
+                <LocationCard key={l.id} locality={l} />
               ))}
             </div>
           </section>

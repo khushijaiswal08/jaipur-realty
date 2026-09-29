@@ -8,7 +8,23 @@ export function Container({ className, ...props }: HTMLAttributes<HTMLDivElement
 }
 
 export function Section({ className, ...props }: HTMLAttributes<HTMLElement>) {
-  return <section className={cn("py-12 sm:py-16", className)} {...props} />;
+  return <section className={cn("py-14 sm:py-20", className)} {...props} />;
+}
+
+/** Small uppercase label above a heading, with a short gold rule. */
+export function Eyebrow({ children, tone = "dark", className }: { children: ReactNode; tone?: "dark" | "light"; className?: string }) {
+  return (
+    <p
+      className={cn(
+        "flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] sm:text-[0.8rem]",
+        tone === "light" ? "text-gold-300" : "text-gold-700",
+        className,
+      )}
+    >
+      <span className={cn("h-px w-8 shrink-0", tone === "light" ? "bg-gold-300" : "bg-gold-500")} aria-hidden="true" />
+      {children}
+    </p>
+  );
 }
 
 export interface SectionHeadingProps {
@@ -32,14 +48,14 @@ export function SectionHeading({ eyebrow, title, description, action, as = "h2",
       )}
     >
       <div className={cn("max-w-2xl", align === "center" && "mx-auto")}>
-        {eyebrow ? <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-brand-700">{eyebrow}</p> : null}
-        <Heading className="font-display text-2xl leading-tight text-ink-950 sm:text-3xl">{title}</Heading>
-        {description ? <p className="mt-3 text-base text-ink-600">{description}</p> : null}
+        {eyebrow ? <Eyebrow className={cn("mb-3", align === "center" && "justify-center")}>{eyebrow}</Eyebrow> : null}
+        <Heading className="font-display text-[1.75rem] font-semibold leading-tight tracking-tight text-brand-900 sm:text-4xl">{title}</Heading>
+        {description ? <p className="mt-3 text-base leading-relaxed text-ink-600 sm:text-lg">{description}</p> : null}
       </div>
       {action ? (
         <Link
           href={action.href}
-          className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800"
+          className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-bold text-brand-600 underline decoration-gold-400 decoration-2 underline-offset-[6px] hover:text-brand-800"
         >
           {action.label}
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />

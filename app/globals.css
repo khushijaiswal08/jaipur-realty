@@ -3,22 +3,46 @@
 /*
  * Design tokens — the ONLY place colours, fonts, radii and shadows are defined (SPEC §40).
  * Components use the generated utilities (bg-brand-600, text-ink-900, rounded-card …),
- * never raw hex values. Swap these when a real brand palette exists.
+ * never raw hex values.
+ *
+ * Palette: white page, deep navy primary (brand), warm gold accent (gold), soft grey
+ * surfaces (surface), WhatsApp green. Navy carries actions; gold is used sparingly for
+ * eyebrows, icons, highlights and the premium CTA — never for body text below gold-700.
  */
 @theme {
-  /* Brand — Jaipur terracotta. brand-600 on white = 5.3:1 contrast. */
-  --color-brand-50: #fdf3ef;
-  --color-brand-100: #fbe3d9;
-  --color-brand-200: #f6c4b1;
-  --color-brand-300: #ef9f82;
-  --color-brand-400: #e27552;
-  --color-brand-500: #cf5733;
-  --color-brand-600: #b7472a;
-  --color-brand-700: #963823;
-  --color-brand-800: #7a3021;
-  --color-brand-900: #642a1f;
+  /* Brand — deep navy primary. brand-600 on white = 11:1; white on brand-600 = 11:1. */
+  --color-brand-50: #f0f4fa;
+  --color-brand-100: #dde6f3;
+  --color-brand-200: #bccde6;
+  --color-brand-300: #8fa9d1;
+  --color-brand-400: #5d7fb5;
+  --color-brand-500: #3a5d96;
+  --color-brand-600: #1f3d6e;
+  --color-brand-700: #182f57;
+  --color-brand-800: #13254a;
+  --color-brand-900: #0e1c3a;
+  --color-brand-950: #0a142b;
 
-  /* Ink — deep navy for text, header/footer surfaces. */
+  /* Gold — warm accent. gold-700 on white = 5.9:1 (text); gold-500 is for fills and icons;
+     gold-300/400 read well on navy. */
+  --color-gold-50: #fbf8f0;
+  --color-gold-100: #f6eed9;
+  --color-gold-200: #ecdab0;
+  --color-gold-300: #dfc182;
+  --color-gold-400: #d1a656;
+  --color-gold-500: #c08f3a;
+  --color-gold-600: #a37629;
+  --color-gold-700: #82601f;
+  --color-gold-800: #664b1c;
+  --color-gold-900: #4f3b19;
+
+  /* Surface — soft greys for alternating sections, chips and table heads. */
+  --color-surface-50: #f7f8fa;
+  --color-surface-100: #f1f3f6;
+  --color-surface-200: #e6e9ee;
+  --color-surface-300: #d4d9e1;
+
+  /* Ink — navy-tinted neutrals for text and borders. */
   --color-ink-50: #f4f6f9;
   --color-ink-100: #e6ebf2;
   --color-ink-200: #c9d3e1;
@@ -31,15 +55,7 @@
   --color-ink-900: #1b2638;
   --color-ink-950: #111a28;
 
-  /* Sand — warm neutral backgrounds. */
-  --color-sand-50: #fcfaf6;
-  --color-sand-100: #f7f2e9;
-  --color-sand-200: #efe5d3;
-  --color-sand-300: #e2d1b3;
-
-  /* Accents */
-  --color-gold-100: #f8eed3;
-  --color-gold-600: #9a7215;
+  /* Status */
   --color-success-50: #ecfdf3;
   --color-success-600: #15803d;
   --color-success-700: #166534;
@@ -52,12 +68,14 @@
   --color-whatsapp: #168043;
   --color-whatsapp-hover: #116b37;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, "Segoe UI", Roboto, "Noto Sans Devanagari", sans-serif;
+  /* Manrope (body) + Playfair Display (headings): editorial, property-brochure feel. */
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, "Segoe UI", Roboto, "Noto Sans Devanagari", sans-serif;
   --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
 
   --radius-card: 1rem;
-  --shadow-card: 0 1px 2px rgb(17 26 40 / 0.05), 0 6px 20px -6px rgb(17 26 40 / 0.12);
-  --shadow-card-hover: 0 2px 4px rgb(17 26 40 / 0.06), 0 14px 32px -10px rgb(17 26 40 / 0.22);
+  --shadow-card: 0 1px 2px rgb(14 28 58 / 0.04), 0 8px 24px -10px rgb(14 28 58 / 0.14);
+  --shadow-card-hover: 0 2px 6px rgb(14 28 58 / 0.06), 0 18px 40px -14px rgb(14 28 58 / 0.26);
+  --shadow-header: 0 1px 0 rgb(14 28 58 / 0.06), 0 8px 24px -12px rgb(14 28 58 / 0.18);
 }
 
 @layer base {
@@ -67,7 +85,7 @@
   }
 
   body {
-    background-color: var(--color-sand-50);
+    background-color: #ffffff;
     color: var(--color-ink-900);
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
@@ -98,14 +116,15 @@
 }
 
 /*
- * The sticky mobile contact bar replaces the floating WhatsApp button on phones (SPEC §25).
- * Deliberately unlayered: it must beat the button's `flex` utility.
+ * Phones get a sticky Call / WhatsApp bar instead of the floating button (SPEC §25). Detail
+ * pages render their own bar (with listing-specific message + Enquire), which replaces the
+ * site-wide one. Deliberately unlayered: it must beat the bar's `grid` utility.
  */
 @media (width < 48rem) {
-  body:has([data-mobile-contact-bar]) [data-floating-whatsapp] {
+  body:has([data-mobile-contact-bar]) [data-site-contact-bar] {
     display: none;
   }
-  body:has([data-mobile-contact-bar]) {
+  body:has([data-mobile-contact-bar], [data-site-contact-bar]) {
     padding-bottom: 4.5rem;
   }
 }
@@ -131,8 +150,9 @@
     margin-top: 1.5em;
   }
   & a {
-    color: var(--color-brand-700);
+    color: var(--color-brand-600);
     text-decoration: underline;
+    text-decoration-color: var(--color-gold-400);
     text-underline-offset: 3px;
   }
   & ul {
@@ -147,8 +167,8 @@
     margin-top: 0.35em;
   }
   & blockquote {
-    border-left: 4px solid var(--color-brand-300);
-    background: var(--color-brand-50);
+    border-left: 4px solid var(--color-gold-400);
+    background: var(--color-gold-50);
     padding: 0.75em 1em;
     border-radius: 0.5rem;
     color: var(--color-ink-800);

@@ -24,7 +24,8 @@ export function ogImage({ eyebrow, title, subtitle, highlight, demo }: OgCardPro
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: `linear-gradient(135deg, ${THEME.ink950} 0%, #26344a 60%, ${THEME.brand600} 140%)`,
+          background: `linear-gradient(135deg, ${THEME.brand900} 0%, ${THEME.brand600} 100%)`,
+          borderBottom: `10px solid ${THEME.gold500}`,
           color: "#ffffff",
           padding: "64px 72px",
           fontFamily: "sans-serif",
@@ -36,7 +37,8 @@ export function ogImage({ eyebrow, title, subtitle, highlight, demo }: OgCardPro
               width: 64,
               height: 64,
               borderRadius: 16,
-              background: THEME.brand600,
+              background: THEME.gold500,
+              color: THEME.brand900,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -52,13 +54,13 @@ export function ogImage({ eyebrow, title, subtitle, highlight, demo }: OgCardPro
           ) : null}
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {eyebrow ? <div style={{ fontSize: 26, letterSpacing: 4, textTransform: "uppercase", color: "#ef9f82" }}>{eyebrow}</div> : null}
+          {eyebrow ? <div style={{ fontSize: 26, letterSpacing: 4, textTransform: "uppercase", color: THEME.gold300 }}>{eyebrow}</div> : null}
           <div style={{ fontSize: title.length > 60 ? 54 : 66, fontWeight: 700, lineHeight: 1.1, maxWidth: 1000 }}>{title}</div>
           {subtitle ? <div style={{ fontSize: 30, color: "#c9d3e1" }}>{subtitle}</div> : null}
         </div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           {highlight ? <div style={{ fontSize: 44, fontWeight: 700 }}>{highlight}</div> : <div />}
-          <div style={{ fontSize: 24, color: "#9fb0c8" }}>{siteConfig.siteUrl.replace(/^https?:\/\//, "")}</div>
+          <div style={{ fontSize: 24, color: THEME.ink300 }}>{siteConfig.siteUrl.replace(/^https?:\/\//, "")}</div>
         </div>
       </div>
     ),

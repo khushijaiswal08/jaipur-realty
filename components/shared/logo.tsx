@@ -16,7 +16,7 @@ export function Logo({ tone = "dark", className }: { tone?: "dark" | "light"; cl
     .join("");
 
   return (
-    <Link href="/" className={cn("inline-flex items-center gap-2.5", className)} aria-label={`${siteConfig.name} — home`}>
+    <Link href="/" className={cn("inline-flex min-w-0 items-center gap-2.5", className)} aria-label={`${siteConfig.name} — home`}>
       {siteConfig.logoUrl ? (
         <Image
           src={siteConfig.logoUrl}
@@ -31,11 +31,14 @@ export function Logo({ tone = "dark", className }: { tone?: "dark" | "light"; cl
         <>
           <span
             aria-hidden="true"
-            className="flex size-9 items-center justify-center rounded-xl bg-brand-600 font-display text-base font-bold text-white shadow-sm"
+            className={cn(
+              "flex size-9 items-center justify-center rounded-xl font-display text-base font-bold shadow-sm",
+              tone === "light" ? "bg-gold-500 text-brand-900" : "bg-brand-600 text-gold-300",
+            )}
           >
             {initials}
           </span>
-          <span className={cn("font-display text-lg font-semibold leading-tight", tone === "light" ? "text-white" : "text-ink-950")}>
+          <span className={cn("truncate font-display text-lg font-semibold leading-tight", tone === "light" ? "text-white" : "text-brand-900")}>
             {siteConfig.name}
           </span>
         </>

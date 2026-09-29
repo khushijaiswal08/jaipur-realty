@@ -20,6 +20,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
   { label: "Blog", href: "/admin/blog", icon: "newspaper", capability: "manageContent", group: "Content" },
   { label: "FAQs", href: "/admin/faqs", icon: "circle-help", capability: "manageContent", group: "Content" },
   { label: "Testimonials", href: "/admin/testimonials", icon: "quote", capability: "manageContent", group: "Content" },
+  { label: "Site settings", href: "/admin/settings", icon: "sliders-horizontal", capability: "manageSettings", group: "Settings" },
   { label: "Admin users", href: "/admin/users", icon: "shield-user", capability: "manageAdmins", group: "Settings" },
   { label: "Audit log", href: "/admin/audit", icon: "history", capability: "manageAdmins", group: "Settings" },
 ];

@@ -7,11 +7,14 @@ export interface NavItem {
 export const MAIN_NAV: NavItem[] = [
   { label: "Buy", href: "/buy", description: "Homes, plots & offices for sale" },
   { label: "Rent", href: "/rent", description: "Flats, houses & shops for rent" },
+  { label: "Commercial", href: "/buy?category=commercial", description: "Offices, shops, showrooms & warehouses" },
   { label: "Projects", href: "/projects", description: "New launches & builder projects" },
   { label: "Localities", href: "/localities", description: "Jaipur neighbourhood guides" },
   { label: "Blog", href: "/blog", description: "Guides & market insights" },
-  { label: "Contact", href: "/contact", description: "Talk to our team" },
 ];
+
+/** The mobile menu also links to Contact (the desktop header has Call / WhatsApp instead). */
+export const MOBILE_NAV: NavItem[] = [...MAIN_NAV, { label: "Contact", href: "/contact", description: "Talk to our team" }];
 
 export const FOOTER_NAV: Record<string, NavItem[]> = {
   Explore: [

@@ -16,7 +16,7 @@ export function ConfigurationsTable({ configurations }: { configurations: Config
     <div className="relative overflow-x-auto rounded-card border border-ink-100 bg-white">
       <table className="w-full min-w-[34rem] text-sm">
         <caption className="sr-only">Unit configurations, areas and prices</caption>
-        <thead className="bg-sand-100 text-left text-xs uppercase tracking-wider text-ink-500">
+        <thead className="bg-surface-100 text-left text-xs uppercase tracking-wider text-ink-500">
           <tr>
             <th scope="col" className="px-4 py-3 font-semibold">
               Configuration

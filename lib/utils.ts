@@ -1,5 +1,21 @@
 import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
+
+/**
+ * tailwind-merge must know our custom tokens/utilities from app/globals.css, otherwise it
+ * guesses (e.g. treats `bg-arches` as a background colour and silently drops `bg-brand-900`).
+ */
+const twMerge = extendTailwindMerge({
+  extend: {
+    theme: {
+      shadow: ["card", "card-hover", "header"],
+      radius: ["card"],
+    },
+    classGroups: {
+      "bg-image": ["bg-arches"],
+    },
+  },
+});
 
 /** Merges Tailwind class lists, letting later utilities override earlier ones. */
 export function cn(...inputs: ClassValue[]): string {

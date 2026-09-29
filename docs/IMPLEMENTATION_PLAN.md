@@ -118,6 +118,16 @@ sq ft/sq yd, phone, IST dates) · lib/whatsapp · lib/seo · lib/analytics · li
 - [x] Test data from verification removed; database back to the seed state
 - [x] Gates: lint ✔ typecheck ✔ tests ✔ build ✔
 
+### Design refresh — design system & homepage (2026-09-29) ✅
+Follow-up brief on top of Phase 1, applied to the finished site.
+- [x] Tokens: white page, deep navy primary, warm gold accent, soft grey `surface-*`, WhatsApp green; Manrope + Playfair Display
+- [x] Header: sticky with scroll state, Call + WhatsApp on the right, hamburger below `lg`; site-wide mobile Call/WhatsApp bar; floating WhatsApp on tablet/desktop
+- [x] `SearchBar` (Buy / Rent / Commercial / Projects × Location / Type / Budget / BHK) → `/properties` redirect → canonical results (unit-tested)
+- [x] Home: popular searches and category counts from live inventory; trust metrics from `SiteSetting` (new table + Admin → Site settings)
+- [x] Projects filter by type, budget and BHK; components renamed to `LocationCard`, `Breadcrumb`, `SearchBar`
+- [x] Fixed tailwind-merge dropping classes next to custom utilities (`bg-arches`, card shadows)
+- [x] Real business phone / WhatsApp / email set in `.env` (not committed)
+
 ## Not verified here
 - The Docker image build itself (Docker isn't installed on the development machine). First build belongs on staging.
 - Real SMTP delivery, Turnstile, GA4/Meta/Clarity with real IDs, and S3 uploads against a real bucket all need live credentials.

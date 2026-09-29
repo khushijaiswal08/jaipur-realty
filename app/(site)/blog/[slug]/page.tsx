@@ -9,7 +9,7 @@ import { ShareButton } from "@/components/shared/share-button";
 import { SmartImage } from "@/components/shared/smart-image";
 import { JsonLd } from "@/components/seo/json-ld";
 import { blogPostingJsonLd } from "@/lib/seo/jsonld";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container, SectionHeading } from "@/components/ui/layout-primitives";
 import { absoluteUrl, siteConfig } from "@/lib/config";
 import { formatDate } from "@/lib/format/date";
@@ -57,7 +57,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
     <>
       <JsonLd data={blogPostingJsonLd(post)} />
       <Container className="py-8 sm:py-10">
-        <Breadcrumbs
+        <Breadcrumb
           items={[
             { label: "Home", href: "/" },
             { label: "Blog", href: "/blog" },
@@ -112,7 +112,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
           {post.tags.length ? (
             <ul className="mt-8 flex flex-wrap gap-2" aria-label="Tags">
               {post.tags.map((t) => (
-                <li key={t} className="rounded-full bg-sand-100 px-3 py-1 text-xs font-medium text-ink-700">
+                <li key={t} className="rounded-full bg-surface-100 px-3 py-1 text-xs font-medium text-ink-700">
                   #{t}
                 </li>
               ))}

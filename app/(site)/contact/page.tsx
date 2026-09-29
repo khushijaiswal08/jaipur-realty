@@ -3,7 +3,7 @@ import { Clock, Mail, MapPin } from "lucide-react";
 import { EnquiryForm } from "@/components/forms/enquiry-form";
 import { CallButton, PhoneLink, WhatsAppButton } from "@/components/shared/contact-buttons";
 import { LocationMap } from "@/components/shared/location-map";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container } from "@/components/ui/layout-primitives";
 import { formattedAddress, siteConfig } from "@/lib/config";
 import { pageRobots } from "@/lib/seo/robots";
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <Container className="py-8 sm:py-12">
-      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Contact" }]} />
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Contact" }]} />
       <h1 className="mt-4 font-display text-3xl text-ink-950 sm:text-4xl">Contact us</h1>
       <p className="mt-2 max-w-2xl text-ink-600">The fastest way to reach us is WhatsApp. You can also call, email, visit the office or send a message below.</p>
 

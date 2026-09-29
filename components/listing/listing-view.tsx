@@ -4,7 +4,7 @@ import { SearchX } from "lucide-react";
 import { SearchTracker } from "@/components/analytics/search-tracker";
 import { PropertyGrid } from "@/components/property/property-card";
 import { WhatsAppButton } from "@/components/shared/contact-buttons";
-import { Breadcrumbs, type Crumb } from "@/components/ui/breadcrumbs";
+import { Breadcrumb, type Crumb } from "@/components/ui/breadcrumb";
 import { buttonVariants } from "@/components/ui/button";
 import { Container, EmptyState } from "@/components/ui/layout-primitives";
 import { Pagination } from "@/components/ui/pagination";
@@ -54,7 +54,7 @@ export function ListingView({ filters: f, result, heading, localities, amenities
       <SearchTracker signature={formKey} transaction={f.transactionType} results={result.total} facets={activeFacetCount(f)} term={f.q} />
       <div className="border-b border-ink-100 bg-white">
         <Container className="py-6 sm:py-8">
-          <Breadcrumbs items={breadcrumbs} />
+          <Breadcrumb items={breadcrumbs} />
           <h1 className="mt-3 font-display text-2xl leading-tight text-ink-950 sm:text-3xl">{heading}</h1>
           <p className="mt-1 text-sm text-ink-500" aria-live="polite">
             {result.total === 1 ? "1 property" : `${formatNumberIN(result.total)} properties`} found

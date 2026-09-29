@@ -8,11 +8,11 @@ const variants: Record<BadgeVariant, string> = {
   brand: "bg-brand-50 text-brand-800 ring-brand-200",
   demo: "bg-warning-50 text-warning-600 ring-warning-600/30 border-dashed",
   verified: "bg-success-50 text-success-700 ring-success-600/25",
-  featured: "bg-gold-100 text-gold-600 ring-gold-600/25",
+  featured: "bg-gold-400 text-brand-950 ring-gold-500",
   rera: "bg-ink-50 text-ink-800 ring-ink-300",
   warning: "bg-warning-50 text-warning-600 ring-warning-600/25",
   danger: "bg-danger-50 text-danger-700 ring-danger-600/25",
-  dark: "bg-ink-900/85 text-white ring-transparent backdrop-blur",
+  dark: "bg-brand-950/85 text-white ring-transparent backdrop-blur",
 };
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {

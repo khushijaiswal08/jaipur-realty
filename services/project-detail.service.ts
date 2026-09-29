@@ -2,6 +2,8 @@ import "server-only";
 
 import { cache } from "react";
 import type { Prisma } from "@/generated/prisma/client";
+import type { PropertyCategory, PropertyType } from "@/generated/prisma/enums";
+import { PROPERTY_TYPE_CATEGORY } from "@/lib/constants/enums";
 import { db } from "@/lib/db";
 import { placeholderImage } from "@/lib/images";
 import type { AmenityDTO, GalleryImageDTO } from "./property-detail.service";
@@ -147,14 +149,39 @@ export async function getProjectListings(projectId: string, limit = 8): Promise<
 export interface ProjectListFilters {
   locality?: string;
   status?: ProjectDetailRow["constructionStatus"];
+  /** Unit category a project must offer (from its configurations). */
+  category?: PropertyCategory;
+  /** Whole rupees; matches projects whose price range overlaps. */
+  minPrice?: number;
+  maxPrice?: number;
+  /** 1–5, where 5 means "5 or more". */
+  bhk?: number[];
+}
+
+/** Configuration-level conditions: a single unit type must satisfy both category and BHK. */
+function configurationWhere(f: ProjectListFilters): Prisma.ConfigurationWhereInput | undefined {
+  const and: Prisma.ConfigurationWhereInput[] = [];
+  if (f.category) {
+    const types = (Object.keys(PROPERTY_TYPE_CATEGORY) as PropertyType[]).filter((t) => PROPERTY_TYPE_CATEGORY[t] === f.category);
+    and.push({ propertyType: { in: types } });
+  }
+  if (f.bhk?.length) {
+    const exact = f.bhk.filter((n) => n < 5);
+    and.push({ OR: [...(exact.length ? [{ bedrooms: { in: exact } }] : []), ...(f.bhk.includes(5) ? [{ bedrooms: { gte: 5 } }] : [])] });
+  }
+  return and.length ? { AND: and } : undefined;
 }
 
 export async function listProjects(filters: ProjectListFilters = {}): Promise<ProjectCardDTO[]> {
+  const config = configurationWhere(filters);
   const rows = await db.project.findMany({
     where: {
       ...publishedProjectWhere,
       ...(filters.locality ? { locality: { slug: filters.locality } } : {}),
       ...(filters.status ? { constructionStatus: filters.status } : {}),
+      ...(config ? { configurations: { some: config } } : {}),
+      ...(filters.maxPrice !== undefined ? { priceMin: { lte: BigInt(filters.maxPrice) } } : {}),
+      ...(filters.minPrice !== undefined ? { priceMax: { gte: BigInt(filters.minPrice) } } : {}),
     },
     select: projectCardSelect,
     orderBy: [{ isFeatured: "desc" }, { publishedAt: "desc" }],
