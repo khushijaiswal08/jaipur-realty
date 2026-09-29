@@ -56,6 +56,11 @@ export function toAgent(row: AgentRow): AgentDTO {
   };
 }
 
+/** id/name pairs for admin selects. */
+export async function getAgentOptions(): Promise<Array<{ id: string; name: string }>> {
+  return db.agent.findMany({ where: { isActive: true }, select: { id: true, name: true }, orderBy: { name: "asc" } });
+}
+
 export async function getActiveAgents(): Promise<AgentDTO[]> {
   const rows = await db.agent.findMany({
     where: { isActive: true },

@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ActionForm } from "@/components/admin/action-form";
 import { Panel, PageHeader, Pill, StatCard } from "@/components/admin/admin-ui";
+import { Input, Label } from "@/components/ui/form-controls";
+import { purgeDemoAction } from "@/lib/actions/admin/users";
+import { demoCounts } from "@/services/admin/admin-users.service";
 import { LEAD_STATUS_TONE, SITE_VISIT_STATUS_TONE } from "@/lib/admin-tones";
 import { can } from "@/lib/auth/permissions";
 import { requireAdmin } from "@/lib/auth/session";
@@ -15,7 +19,7 @@ export default async function AdminDashboard({ searchParams }: PageProps<"/admin
   const admin = await requireAdmin();
   const { denied } = await searchParams;
   const leadsAccess = can(admin.role, "manageLeads");
-  const s = await getDashboardStats();
+  const [s, demo] = await Promise.all([getDashboardStats(), can(admin.role, "purgeDemo") ? demoCounts() : Promise.resolve(null)]);
   const maxSource = Math.max(1, ...s.leadsBySource.map((x) => x.count));
 
   return (
@@ -113,6 +117,21 @@ export default async function AdminDashboard({ searchParams }: PageProps<"/admin
             ) : (
               <p className="text-sm text-ink-500">No visits scheduled for the next 7 days.</p>
             )}
+          </Panel>
+        ) : null}
+
+        {demo && demo.total > 0 ? (
+          <Panel title="Demo content" className="xl:col-span-3">
+            <p className="text-sm text-ink-600">
+              The site still contains demo records: {demo.properties} properties, {demo.projects} projects, {demo.agents} agent(s), {demo.testimonials}{" "}
+              testimonials and {demo.blogPosts} blog posts. Remove them once your real listings are live.
+            </p>
+            <ActionForm action={purgeDemoAction} submitLabel="Delete all demo content" variant="danger" size="sm" className="mt-3 max-w-md">
+              <div>
+                <Label htmlFor="purge-confirm">Type PURGE to confirm</Label>
+                <Input id="purge-confirm" name="confirm" autoComplete="off" className="h-10" />
+              </div>
+            </ActionForm>
           </Panel>
         ) : null}
 
