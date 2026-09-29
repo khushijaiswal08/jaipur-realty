@@ -2,9 +2,10 @@ import "server-only";
 
 import type { Metadata } from "next";
 import type { TransactionType } from "@/generated/prisma/enums";
+import { absoluteUrl } from "@/lib/config";
 import { listingDescription, listingHeading, shouldIndexListing } from "@/lib/seo/listing";
 import { pageRobots } from "@/lib/seo/robots";
-import { listingPath, parseListingFilters, toSearchParams, type ListingFilters, type RawSearchParams } from "@/lib/search/filters";
+import { listingPath, parseListingFilters, toSearchParams, type RawSearchParams } from "@/lib/search/filters";
 import { getAmenities } from "@/services/amenity.service";
 import { getLocalityLinks } from "@/services/locality.service";
 import { searchProperties } from "@/services/property-search.service";
@@ -18,16 +19,26 @@ export async function loadListingPage(params: RawSearchParams, tx: TransactionTy
   return { filters, result, localities, amenities, heading };
 }
 
-export async function listingMetadata(params: RawSearchParams, tx: TransactionType, canonicalPath?: string): Promise<Metadata> {
-  const filters: ListingFilters = parseListingFilters(params, tx);
+/**
+ * Metadata for listing pages. Landing pages (/buy/[locality]) pass `fixedLocality` so their
+ * canonical is the clean path rather than /buy?locality=….
+ */
+export async function listingMetadata(params: RawSearchParams, tx: TransactionType, options: { fixedLocality?: string } = {}): Promise<Metadata> {
+  const filters = parseListingFilters(params, tx, { fixedLocality: options.fixedLocality });
   const localities = await getLocalityLinks();
   const heading = listingHeading(filters, new Map(localities.map((l) => [l.slug, l.name])));
-  const qs = toSearchParams(filters, { sort: "relevance", page: 1 }).toString();
+  const basePath = options.fixedLocality ? `${listingPath(tx)}/${options.fixedLocality}` : listingPath(tx);
+  const rest = options.fixedLocality ? { ...filters, localities: filters.localities.filter((l) => l !== options.fixedLocality) } : filters;
+  const qs = toSearchParams(rest, { sort: "relevance", page: 1 }).toString();
   const index = shouldIndexListing(filters);
+  const canonical = index && qs ? `${basePath}?${qs}` : basePath;
+  const title = filters.page > 1 ? `${heading} — Page ${filters.page}` : heading;
+  const description = listingDescription(filters, heading, 0);
   return {
-    title: filters.page > 1 ? `${heading} — Page ${filters.page}` : heading,
-    description: listingDescription(filters, heading, 0),
-    alternates: { canonical: canonicalPath ?? (index && qs ? `${listingPath(tx)}?${qs}` : listingPath(tx)) },
+    title,
+    description,
+    alternates: { canonical },
     robots: pageRobots(index),
+    openGraph: { title, description, url: absoluteUrl(canonical) },
   };
 }
