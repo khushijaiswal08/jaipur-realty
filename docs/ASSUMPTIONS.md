@@ -1,0 +1,89 @@
+# Assumptions & Placeholders
+
+Everything below was decided without input from the business, so it is either a **placeholder**
+(must be replaced before launch) or a **default** (a sensible choice you may want to revisit).
+Update this file whenever one of these is resolved.
+
+_Last updated: 2026-09-29_
+
+## 1. Business placeholders — replace before launch
+
+All of these live in `.env` and are read **only** by `lib/config` (SPEC §34). Nothing else in the
+codebase hardcodes them. Changing a `NEXT_PUBLIC_*` value requires a rebuild.
+
+| What | Env var | Placeholder value | Notes |
+|---|---|---|---|
+| Business name | `NEXT_PUBLIC_BUSINESS_NAME` | `Demo Realty Jaipur` | Used in header, footer, titles, emails, WhatsApp messages. |
+| Logo | `NEXT_PUBLIC_BUSINESS_LOGO_URL` | _(empty → text wordmark)_ | Put the file in `public/brand/` and set e.g. `/brand/logo.svg`. |
+| Phone | `NEXT_PUBLIC_BUSINESS_PHONE` | `+91 90000 00000` | Obviously fake; call buttons dial it until replaced. |
+| WhatsApp | `NEXT_PUBLIC_BUSINESS_WHATSAPP` | _(empty → uses phone)_ | Must be a mobile number. |
+| Email | `NEXT_PUBLIC_BUSINESS_EMAIL` | `hello@example.com` | `example.com` is reserved and never delivers. |
+| Office address | `NEXT_PUBLIC_BUSINESS_ADDRESS_LINE1/2`, `_CITY`, `_STATE`, `_PINCODE` | `Office No. 0, Demo Business Centre`, Vaishali Nagar, Jaipur 302021 | |
+| Office location | `NEXT_PUBLIC_BUSINESS_LAT/LNG` | Vaishali Nagar centroid | Used for the contact-page map and LocalBusiness schema. |
+| Office hours | `NEXT_PUBLIC_BUSINESS_HOURS` | `Mon–Sat 10:00–19:00` | |
+| RERA agent number | `NEXT_PUBLIC_RERA_AGENT_NUMBER` | _(empty)_ | Never invented. Shown in the footer only once set. |
+| Google Maps API key | `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | _(empty → OpenStreetMap)_ | Set `NEXT_PUBLIC_MAP_PROVIDER=google` too. Restrict the key to your domain. |
+| Analytics IDs | `NEXT_PUBLIC_GA4_ID`, `_GTM_ID`, `_META_PIXEL_ID`, `_CLARITY_ID` | _(empty → no scripts load)_ | |
+| Search Console | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | _(empty)_ | |
+| Social links | `NEXT_PUBLIC_SOCIAL_*` | _(empty → hidden)_ | |
+| Lead email | `SMTP_*`, `LEAD_NOTIFICATION_EMAIL` | _(empty → leads logged to server console)_ | Leads are always saved to the database regardless. |
+
+**Launch guard:** the build refuses `NEXT_PUBLIC_ALLOW_INDEXING=true` while any placeholder name,
+phone or email is still set. While placeholders are in use, the footer also shows a small notice.
+
+## 2. Demo content
+
+- **20 demo properties, 5 demo projects, 1 demo agent, 5 demo testimonials, 3 demo blog posts.**
+  All have `isDemo = true`, show a visible **Demo** badge or label, are `noindex`, and are excluded
+  from the sitemap and structured data.
+- Demo developer names end in "(Demo)" and are fictional. Project and person names are invented;
+  any resemblance to real entities is unintended.
+- **No RERA or JDA registration numbers were invented.** Demo records leave them empty.
+- Demo prices are plausible for each locality but purely illustrative.
+- Remove all demo rows with `npm run db:purge-demo` (SUPER_ADMIN can also do it from the admin
+  panel once built). Re-running `npm run db:seed` restores demo rows to their seeded state.
+- The 8 general FAQs are process-only (no legal or tax claims) and are **not** demo-flagged —
+  review the wording, especially the brokerage answer, before launch.
+
+## 3. Locality data (SPEC §3)
+
+- The 12 localities, zones, pincodes, centroid coordinates, descriptions and connectivity notes
+  are **indicative** editorial content. Verify them before launch.
+- `avgPricePerSqft` and `avgRent2Bhk` are indicative and always labelled "indicative" in the UI.
+  Maintain them from the admin panel.
+- Descriptions deliberately avoid exact distances and named institutions that may change.
+
+## 4. Product & technical defaults
+
+| Topic | Default chosen | Why / how to change |
+|---|---|---|
+| Spec | Reconstructed `docs/SPEC.md` adopted as the working spec | Original was unavailable. Replace sections as the real requirements arrive. |
+| Stack | Next.js 16.3 (App Router, Turbopack), React 19.2, TypeScript strict, Tailwind 4, Prisma 7.10 + `@prisma/adapter-pg`, PostgreSQL 17, zod 4 | Latest stable at project start. Prisma's npm `latest` tag pointed at an 8.0 RC, so 7.10 (stable) is pinned. |
+| Caching model | Next.js "previous model" (ISR with `revalidate`, on-demand `revalidatePath`) rather than `cacheComponents` | Simpler and well-understood; can migrate later. |
+| Money | Whole rupees in `BigInt` columns; services convert to `number` | Avoids the ₹214 Cr cap of 32-bit ints. |
+| Areas | Stored in sq ft; plots display in sq yd ("Gaj") | Jaipur convention. |
+| Bigha | 1 bigha = 27,225 sq ft (Rajasthan "pucca" bigha) | Varies by region — single constant in `lib/format/area.ts`. |
+| Property reference codes | `JP` + number from a Postgres sequence (`JP1001`…) | Seed resets the sequence after seeding. |
+| Maps | OpenStreetMap embed (no key) by default; Google Maps embed when a key is set | Exact addresses hidden by default (`hideExactLocation`). |
+| Admin auth | Email + password (bcrypt), DB-backed revocable sessions, httpOnly cookie | No default admin is created — run `npm run admin:create`. |
+| Rate limiting | In-memory, per server instance | Fine for a single VPS/container. Use a shared store (e.g. Redis/Upstash) if you scale horizontally. |
+| Uploads | `STORAGE_DRIVER=local` → `storage/uploads/`, served via `/media/...` | Needs a persistent disk. Use `s3` (S3/R2/Spaces/MinIO) on serverless hosts. |
+| Email | nodemailer over SMTP; console fallback | Any SMTP provider works (Gmail Workspace, SES, Zoho, Brevo…). |
+| Analytics consent | Off by default (`NEXT_PUBLIC_REQUIRE_ANALYTICS_CONSENT=false`) | Set `true` to hold analytics until the visitor opts in. |
+| Language | English UI; Indian number formatting; IST for all dates | Hindi can be added later. |
+| Brand colours | Terracotta (Jaipur) primary + deep navy, defined once in `app/globals.css` | Swap tokens when a brand palette exists. |
+| Stamp duty rates | Indicative constants with an "effective from" date and a disclaimer | Update `lib/constants/tools.ts` when rates change. |
+
+## 5. Local development environment (this machine)
+
+- Installed via winget on 2026-09-29: Node.js 24.19 LTS, PostgreSQL 17.11 (Windows service
+  `postgresql-x64-17`, port 5432) and Git 2.55.
+- Database `realestate` owned by role `realestate` (with `CREATEDB` for Prisma's shadow database).
+  The password is only in the git-ignored `.env`.
+- `.env` contains generated `AUTH_SECRET` and `IP_HASH_SALT`. Generate new ones for production.
+
+## 6. Known limitations
+
+- `npm audit` reports advisories in transitive dependencies of the **Prisma CLI** (dev-time only:
+  `deepmerge-ts`, `mysql2`). They are not part of the runtime bundle. npm's suggested fix
+  (downgrading Prisma to v6) is not applied; revisit when Prisma ships updated dependencies.

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Living room (demo image)">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6f1ea"/>
+      <stop offset="1" stop-color="#ece3d6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <rect x="0" y="650" width="1200" height="250" fill="#d8c7ae"/>
+      <rect x="700" y="140" width="330" height="330" fill="#cfe3ee" stroke="#2f2a25" stroke-width="6"/>
+      <line x1="865" y1="140" x2="865" y2="470" stroke="#2f2a25" stroke-width="5"/>
+      <rect x="180" y="470" width="480" height="150" rx="30" fill="#9a5b3c"/>
+      <rect x="150" y="430" width="80" height="210" rx="30" fill="#9a5b3c"/>
+      <rect x="610" y="430" width="80" height="210" rx="30" fill="#9a5b3c"/>
+      <rect x="220" y="420" width="190" height="90" rx="20" fill="#c77d5a"/>
+      <rect x="430" y="420" width="190" height="90" rx="20" fill="#c77d5a"/>
+      <ellipse cx="420" cy="760" rx="330" ry="60" fill="#e9dcc8"/>
+      <rect x="330" y="690" width="180" height="20" rx="6" fill="#6b4a33"/>
+      <rect x="1060" y="400" width="10" height="250" fill="#2f2a25"/>
+      <path d="M 1020 400 h 90 l -20 -80 h -50 z" fill="#f6d9a8"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <rect x="36" y="804" width="247" height="60" rx="30" fill="#ffffff" fill-opacity="0.88"/>
+    <text x="159.5" y="844" text-anchor="middle" font-size="30" font-weight="600" fill="#2f2a25">Living room</text>
+    <rect x="944" y="36" width="220" height="52" rx="26" fill="#111827" fill-opacity="0.72"/>
+    <text x="1054" y="71" text-anchor="middle" font-size="22" font-weight="700" letter-spacing="3" fill="#ffffff">DEMO IMAGE</text>
+  </g>
+</svg>

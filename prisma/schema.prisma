@@ -1,0 +1,836 @@
+// Jaipur real-estate platform — data model.
+// Source of truth: docs/SPEC.md §10 (projects), §11 (localities), §12 (enums),
+// §13 (properties), §28 (leads), §42 (admin / CMS / supporting entities).
+//
+// Conventions
+// - Money is stored as whole rupees in BigInt columns.
+// - Areas are stored in square feet (Float); display units live in lib/format/area.ts.
+// - Demo records carry `isDemo = true` (SPEC §35).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ───────────────────────────── Enums (SPEC §12, §28.1, §42.1) ─────────────────────────────
+
+enum TransactionType {
+  SALE
+  RENT
+}
+
+enum PropertyCategory {
+  RESIDENTIAL
+  COMMERCIAL
+  LAND
+}
+
+enum PropertyType {
+  APARTMENT
+  BUILDER_FLOOR
+  INDEPENDENT_HOUSE
+  VILLA
+  PENTHOUSE
+  STUDIO
+  FARMHOUSE
+  RESIDENTIAL_PLOT
+  COMMERCIAL_PLOT
+  AGRICULTURAL_LAND
+  OFFICE_SPACE
+  SHOP
+  SHOWROOM
+  WAREHOUSE
+}
+
+enum ListingStatus {
+  DRAFT
+  ACTIVE
+  UNDER_OFFER
+  SOLD
+  RENTED
+  INACTIVE
+}
+
+enum ConstructionStatus {
+  UPCOMING
+  NEW_LAUNCH
+  UNDER_CONSTRUCTION
+  READY_TO_MOVE
+}
+
+enum Furnishing {
+  UNFURNISHED
+  SEMI_FURNISHED
+  FULLY_FURNISHED
+}
+
+enum Facing {
+  NORTH
+  NORTH_EAST
+  EAST
+  SOUTH_EAST
+  SOUTH
+  SOUTH_WEST
+  WEST
+  NORTH_WEST
+}
+
+enum OwnershipType {
+  FREEHOLD
+  LEASEHOLD
+  COOPERATIVE_SOCIETY
+  POWER_OF_ATTORNEY
+}
+
+enum ListedBy {
+  AGENCY
+  OWNER
+  BUILDER
+}
+
+enum TenantPreference {
+  ANY
+  FAMILY
+  BACHELORS
+  COMPANY_LEASE
+}
+
+enum AreaUnit {
+  SQFT
+  SQYD
+  SQM
+  ACRE
+  HECTARE
+  BIGHA
+}
+
+enum ImageKind {
+  PHOTO
+  FLOOR_PLAN
+  MASTER_PLAN
+  LOCATION_MAP
+}
+
+enum AmenityCategory {
+  BASIC
+  SECURITY
+  RECREATION
+  HEALTH_FITNESS
+  CONVENIENCE
+  ENVIRONMENT
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  SITE_VISIT_SCHEDULED
+  SITE_VISIT_DONE
+  NEGOTIATION
+  WON
+  LOST
+  SPAM
+}
+
+enum LeadSource {
+  PROPERTY_ENQUIRY
+  PROJECT_ENQUIRY
+  CONTACT_FORM
+  CALLBACK_REQUEST
+  SITE_VISIT_REQUEST
+  BROCHURE_REQUEST
+  OWNER_LISTING
+  WHATSAPP
+  PHONE_CALL
+  WALK_IN
+  REFERRAL
+  OTHER
+}
+
+enum LeadActivityType {
+  NOTE
+  CALL
+  WHATSAPP
+  EMAIL
+  MEETING
+  STATUS_CHANGE
+  ASSIGNMENT
+  REPEAT_ENQUIRY
+}
+
+enum SiteVisitStatus {
+  REQUESTED
+  CONFIRMED
+  RESCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum OwnerListingStatus {
+  PENDING_REVIEW
+  CONTACTED
+  APPROVED
+  REJECTED
+  CONVERTED
+}
+
+enum PublishStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+}
+
+enum FaqScope {
+  GENERAL
+  BUYING
+  RENTING
+  SELLING
+  HOME_LOANS
+  LEGAL
+  PROPERTY
+  PROJECT
+  LOCALITY
+}
+
+// ───────────────────────────── Geography (SPEC §11) ─────────────────────────────
+
+model City {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  state     String
+  isActive  Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  localities    Locality[]
+  properties    Property[]
+  projects      Project[]
+  ownerListings OwnerListing[]
+
+  @@map("cities")
+}
+
+model Locality {
+  id              String   @id @default(cuid())
+  cityId          String
+  name            String
+  slug            String
+  zone            String?
+  pincode         String?
+  description     String?  @db.Text
+  highlights      String[]
+  connectivity    String[]
+  latitude        Float?
+  longitude       Float?
+  /// Indicative sale rate (₹ per sq ft) — manually maintained, labelled "indicative" in the UI.
+  avgPricePerSqft Int?
+  /// Indicative monthly rent for a 2 BHK — labelled "indicative" in the UI.
+  avgRent2Bhk     Int?
+  imageUrl        String?
+  isFeatured      Boolean  @default(false)
+  sortOrder       Int      @default(0)
+  seoTitle        String?
+  seoDescription  String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  city          City           @relation(fields: [cityId], references: [id], onDelete: Restrict)
+  properties    Property[]
+  projects      Project[]
+  leads         Lead[]
+  ownerListings OwnerListing[]
+  faqs          Faq[]
+
+  @@unique([cityId, slug])
+  @@index([cityId, isFeatured])
+  @@index([name])
+  @@map("localities")
+}
+
+// ───────────────────────────── Properties (SPEC §13) ─────────────────────────────
+
+model Amenity {
+  id        String          @id @default(cuid())
+  name      String          @unique
+  slug      String          @unique
+  /// lucide-react icon name, e.g. "dumbbell"
+  icon      String
+  category  AmenityCategory
+  sortOrder Int             @default(0)
+
+  properties Property[]
+  projects   Project[]
+
+  @@map("amenities")
+}
+
+model Property {
+  id                 String              @id @default(cuid())
+  /// Human-readable reference, e.g. "JP1001". New codes come from the `property_ref_seq` sequence.
+  refCode            String              @unique
+  slug               String              @unique
+  title              String
+  description        String              @db.Text
+  transactionType    TransactionType
+  propertyType       PropertyType
+  category           PropertyCategory
+  status             ListingStatus       @default(DRAFT)
+  constructionStatus ConstructionStatus?
+  listedBy           ListedBy            @default(AGENCY)
+
+  /// Whole rupees. SALE = total price, RENT = monthly rent. Null when priceOnRequest.
+  price              BigInt?
+  priceOnRequest     Boolean @default(false)
+  isNegotiable       Boolean @default(false)
+  pricePerSqft       Int?
+  maintenanceMonthly Int?
+  securityDeposit    BigInt?
+  bookingAmount      BigInt?
+
+  bedrooms  Int?
+  bathrooms Int?
+  balconies Int?
+
+  /// Areas in square feet.
+  carpetArea       Float?
+  builtUpArea      Float?
+  superBuiltUpArea Float?
+  plotArea         Float?
+  areaDisplayUnit  AreaUnit @default(SQFT)
+  plotLengthFt     Float?
+  plotWidthFt      Float?
+
+  floorNumber      Int?
+  totalFloors      Int?
+  facing           Facing?
+  furnishing       Furnishing?
+  ownershipType    OwnershipType?
+  ageYears         Int?
+  possessionDate   DateTime?
+  availableFrom    DateTime?
+  preferredTenants TenantPreference[]
+  coveredParking   Int?
+  openParking      Int?
+  roadWidthFt      Int?
+  isCornerPlot     Boolean            @default(false)
+  isGatedCommunity Boolean            @default(false)
+  /// Jaipur Development Authority approval. Null = unknown.
+  jdaApproved      Boolean?
+  /// Never fabricated (SPEC §49).
+  reraNumber       String?
+
+  address           String?
+  landmark          String?
+  pincode           String?
+  latitude          Float?
+  longitude         Float?
+  hideExactLocation Boolean @default(true)
+
+  cityId     String
+  localityId String
+  projectId  String?
+  agentId    String?
+
+  videoUrl       String?
+  virtualTourUrl String?
+
+  isFeatured     Boolean   @default(false)
+  isVerified     Boolean   @default(false)
+  isDemo         Boolean   @default(false)
+  viewCount      Int       @default(0)
+  seoTitle       String?
+  seoDescription String?
+  publishedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  city         City            @relation(fields: [cityId], references: [id], onDelete: Restrict)
+  locality     Locality        @relation(fields: [localityId], references: [id], onDelete: Restrict)
+  project      Project?        @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  agent        Agent?          @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  amenities    Amenity[]
+  images       PropertyImage[]
+  leads        Lead[]
+  siteVisits   SiteVisit[]
+  views        PropertyView[]
+  faqs         Faq[]
+  ownerListing OwnerListing?
+
+  @@index([status, transactionType, propertyType])
+  @@index([localityId, status])
+  @@index([cityId, status])
+  @@index([status, price])
+  @@index([status, bedrooms])
+  @@index([isFeatured, status])
+  @@index([status, publishedAt])
+  @@index([category])
+  @@index([projectId])
+  @@index([agentId])
+  @@index([isDemo])
+  @@map("properties")
+}
+
+model PropertyImage {
+  id         String    @id @default(cuid())
+  propertyId String
+  url        String
+  alt        String
+  width      Int
+  height     Int
+  kind       ImageKind @default(PHOTO)
+  caption    String?
+  sortOrder  Int       @default(0)
+  isCover    Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId, sortOrder])
+  @@map("property_images")
+}
+
+// ───────────────────────────── Projects (SPEC §10) ─────────────────────────────
+
+model Project {
+  id                   String             @id @default(cuid())
+  name                 String
+  slug                 String             @unique
+  developerName        String
+  developerDescription String?            @db.Text
+  reraNumber           String?
+  status               PublishStatus      @default(DRAFT)
+  constructionStatus   ConstructionStatus
+  launchDate           DateTime?
+  possessionDate       DateTime?
+  totalUnits           Int?
+  totalTowers          Int?
+  totalFloors          Int?
+  landAreaAcres        Float?
+  description          String             @db.Text
+  highlights           String[]
+  /// Derived from configurations on save (whole rupees).
+  priceMin             BigInt?
+  priceMax             BigInt?
+  priceOnRequest       Boolean            @default(false)
+  address              String?
+  pincode              String?
+  latitude             Float?
+  longitude            Float?
+  cityId               String
+  localityId           String
+  brochureUrl          String?
+  videoUrl             String?
+  isFeatured           Boolean            @default(false)
+  isDemo               Boolean            @default(false)
+  viewCount            Int                @default(0)
+  seoTitle             String?
+  seoDescription       String?
+  publishedAt          DateTime?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  city           City            @relation(fields: [cityId], references: [id], onDelete: Restrict)
+  locality       Locality        @relation(fields: [localityId], references: [id], onDelete: Restrict)
+  amenities      Amenity[]
+  images         ProjectImage[]
+  configurations Configuration[]
+  properties     Property[]
+  leads          Lead[]
+  siteVisits     SiteVisit[]
+  faqs           Faq[]
+  views          PropertyView[]
+
+  @@index([status, constructionStatus])
+  @@index([localityId])
+  @@index([cityId])
+  @@index([isFeatured, status])
+  @@index([publishedAt])
+  @@map("projects")
+}
+
+model ProjectImage {
+  id        String    @id @default(cuid())
+  projectId String
+  url       String
+  alt       String
+  width     Int
+  height    Int
+  kind      ImageKind @default(PHOTO)
+  caption   String?
+  sortOrder Int       @default(0)
+  isCover   Boolean   @default(false)
+  createdAt DateTime  @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, sortOrder])
+  @@map("project_images")
+}
+
+/// A unit type within a project, e.g. "3 BHK Apartment".
+model Configuration {
+  id             String       @id @default(cuid())
+  projectId      String
+  label          String
+  propertyType   PropertyType
+  bedrooms       Int?
+  carpetAreaMin  Float?
+  carpetAreaMax  Float?
+  superAreaMin   Float?
+  superAreaMax   Float?
+  priceMin       BigInt?
+  priceMax       BigInt?
+  unitsAvailable Int?
+  floorPlanUrl   String?
+  sortOrder      Int          @default(0)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, sortOrder])
+  @@map("configurations")
+}
+
+// ───────────────────────────── People (SPEC §42) ─────────────────────────────
+
+model Agent {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  designation     String?
+  /// E.164. Null = fall back to the business phone (SPEC §34).
+  phone           String?
+  /// E.164. Null = fall back to phone, then business WhatsApp.
+  whatsapp        String?
+  email           String?
+  photoUrl        String?
+  bio             String?  @db.Text
+  languages       String[]
+  experienceYears Int?
+  reraAgentNumber String?
+  isActive        Boolean  @default(true)
+  isDemo          Boolean  @default(false)
+  sortOrder       Int      @default(0)
+  adminId         String?  @unique
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  admin      Admin?      @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  properties Property[]
+  leads      Lead[]
+  siteVisits SiteVisit[]
+
+  @@index([isActive, sortOrder])
+  @@map("agents")
+}
+
+model Admin {
+  id           String    @id @default(cuid())
+  /// Stored lowercased.
+  email        String    @unique
+  name         String
+  passwordHash String
+  role         AdminRole @default(EDITOR)
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  sessions   AdminSession[]
+  agent      Agent?
+  blogPosts  BlogPost[]
+  activities LeadActivity[]
+  auditLogs  AuditLog[]
+
+  @@map("admins")
+}
+
+/// Server-side admin session. The cookie holds a random token; only its SHA-256 hash is stored,
+/// so sessions can be listed and revoked (logout, deactivation, password change).
+model AdminSession {
+  id         String   @id @default(cuid())
+  adminId    String
+  tokenHash  String   @unique
+  expiresAt  DateTime
+  userAgent  String?
+  createdAt  DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+
+  admin Admin @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@index([expiresAt])
+  @@map("admin_sessions")
+}
+
+// ───────────────────────────── Leads (SPEC §28) ─────────────────────────────
+
+model Lead {
+  id              String           @id @default(cuid())
+  name            String
+  /// E.164
+  phone           String
+  email           String?
+  message         String?          @db.Text
+  source          LeadSource
+  status          LeadStatus       @default(NEW)
+  propertyId      String?
+  projectId       String?
+  localityId      String?
+  assignedAgentId String?
+  transactionType TransactionType?
+  budgetMin       BigInt?
+  budgetMax       BigInt?
+  preferredDate   DateTime?
+  followUpAt      DateTime?
+  pageUrl         String?
+  referrer        String?
+  utmSource       String?
+  utmMedium       String?
+  utmCampaign     String?
+  utmTerm         String?
+  utmContent      String?
+  consentAt       DateTime
+  isSpam          Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  property      Property?      @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  project       Project?       @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  locality      Locality?      @relation(fields: [localityId], references: [id], onDelete: SetNull)
+  assignedAgent Agent?         @relation(fields: [assignedAgentId], references: [id], onDelete: SetNull)
+  activities    LeadActivity[]
+  siteVisits    SiteVisit[]
+  ownerListing  OwnerListing?
+
+  @@index([status, createdAt])
+  @@index([phone])
+  @@index([source, createdAt])
+  @@index([assignedAgentId, status])
+  @@index([propertyId])
+  @@index([projectId])
+  @@index([followUpAt])
+  @@map("leads")
+}
+
+model LeadActivity {
+  id               String           @id @default(cuid())
+  leadId           String
+  type             LeadActivityType
+  body             String?          @db.Text
+  createdByAdminId String?
+  createdAt        DateTime         @default(now())
+
+  lead      Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  createdBy Admin? @relation(fields: [createdByAdminId], references: [id], onDelete: SetNull)
+
+  @@index([leadId, createdAt])
+  @@map("lead_activities")
+}
+
+model SiteVisit {
+  id          String          @id @default(cuid())
+  leadId      String
+  propertyId  String?
+  projectId   String?
+  agentId     String?
+  /// Stored in UTC, displayed in IST.
+  scheduledAt DateTime
+  status      SiteVisitStatus @default(REQUESTED)
+  notes       String?         @db.Text
+  feedback    String?         @db.Text
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  lead     Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  property Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  project  Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  agent    Agent?    @relation(fields: [agentId], references: [id], onDelete: SetNull)
+
+  @@index([scheduledAt, status])
+  @@index([leadId])
+  @@index([agentId, scheduledAt])
+  @@index([propertyId])
+  @@map("site_visits")
+}
+
+model OwnerListing {
+  id                  String             @id @default(cuid())
+  ownerName           String
+  /// E.164
+  ownerPhone          String
+  ownerEmail          String?
+  transactionType     TransactionType
+  propertyType        PropertyType
+  cityId              String?
+  localityId          String?
+  localityText        String?
+  address             String?
+  expectedPrice       BigInt?
+  /// In `areaUnit`, as entered by the owner.
+  area                Float?
+  areaUnit            AreaUnit           @default(SQFT)
+  bedrooms            Int?
+  description         String?            @db.Text
+  imageUrls           String[]
+  status              OwnerListingStatus @default(PENDING_REVIEW)
+  reviewNotes         String?            @db.Text
+  leadId              String?            @unique
+  convertedPropertyId String?            @unique
+  consentAt           DateTime
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  city              City?     @relation(fields: [cityId], references: [id], onDelete: SetNull)
+  locality          Locality? @relation(fields: [localityId], references: [id], onDelete: SetNull)
+  lead              Lead?     @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  convertedProperty Property? @relation(fields: [convertedPropertyId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([ownerPhone])
+  @@map("owner_listings")
+}
+
+// ───────────────────────────── Content (SPEC §42) ─────────────────────────────
+
+model BlogCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?  @db.Text
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  posts BlogPost[]
+
+  @@map("blog_categories")
+}
+
+model BlogPost {
+  id                 String        @id @default(cuid())
+  title              String
+  slug               String        @unique
+  excerpt            String
+  /// Markdown
+  content            String        @db.Text
+  coverImageUrl      String?
+  coverImageAlt      String?
+  status             PublishStatus @default(DRAFT)
+  publishedAt        DateTime?
+  readingTimeMinutes Int?
+  tags               String[]
+  categoryId         String?
+  authorId           String?
+  isDemo             Boolean       @default(false)
+  seoTitle           String?
+  seoDescription     String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  category BlogCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  author   Admin?        @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([status, publishedAt])
+  @@index([categoryId, status])
+  @@map("blog_posts")
+}
+
+model Faq {
+  id          String   @id @default(cuid())
+  question    String
+  /// Markdown
+  answer      String   @db.Text
+  scope       FaqScope
+  propertyId  String?
+  projectId   String?
+  localityId  String?
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  property Property? @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  project  Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  locality Locality? @relation(fields: [localityId], references: [id], onDelete: Cascade)
+
+  @@index([scope, isPublished, sortOrder])
+  @@index([projectId])
+  @@index([localityId])
+  @@index([propertyId])
+  @@map("faqs")
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  name        String
+  location    String?
+  /// e.g. "Bought a 3 BHK in Vaishali Nagar"
+  context     String?
+  quote       String   @db.Text
+  rating      Int?
+  photoUrl    String?
+  isPublished Boolean  @default(true)
+  isDemo      Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, sortOrder])
+  @@map("testimonials")
+}
+
+// ───────────────────────────── Tracking & audit (SPEC §42, §48) ─────────────────────────────
+
+model PropertyView {
+  id          String   @id @default(cuid())
+  propertyId  String?
+  projectId   String?
+  viewedAt    DateTime @default(now())
+  /// SHA-256(IP + user agent + daily salt). No raw IP is stored.
+  visitorHash String
+  referrer    String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  /// "mobile" | "tablet" | "desktop"
+  deviceType  String?
+
+  property Property? @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  project  Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId, viewedAt])
+  @@index([projectId, viewedAt])
+  @@index([viewedAt])
+  @@index([visitorHash, propertyId, viewedAt])
+  @@map("property_views")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  adminId    String?
+  /// e.g. "property.update"
+  action     String
+  entityType String
+  entityId   String
+  changes    Json?
+  createdAt  DateTime @default(now())
+
+  admin Admin? @relation(fields: [adminId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}

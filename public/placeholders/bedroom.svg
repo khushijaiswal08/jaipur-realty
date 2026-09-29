@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Bedroom (demo image)">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6f1ea"/>
+      <stop offset="1" stop-color="#ece3d6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <rect x="0" y="640" width="1200" height="260" fill="#d8c7ae"/>
+      <rect x="120" y="160" width="300" height="260" fill="#d7e8f0" stroke="#2f2a25" stroke-width="6"/>
+      <rect x="470" y="330" width="560" height="120" rx="16" fill="#8a5a3c"/>
+      <rect x="450" y="450" width="620" height="170" rx="20" fill="#f7f1e8" stroke="#2f2a25" stroke-width="4"/>
+      <rect x="500" y="400" width="200" height="80" rx="24" fill="#ffffff" stroke="#2f2a25" stroke-width="3"/>
+      <rect x="800" y="400" width="200" height="80" rx="24" fill="#ffffff" stroke="#2f2a25" stroke-width="3"/>
+      <rect x="450" y="520" width="620" height="100" rx="16" fill="#9a5b3c" fill-opacity="0.85"/>
+      <rect x="250" y="520" width="140" height="120" rx="8" fill="#b88d6a"/>
+      <path d="M 285 520 h 70 l -12 -70 h -46 z" fill="#f6d9a8"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <rect x="36" y="804" width="220" height="60" rx="30" fill="#ffffff" fill-opacity="0.88"/>
+    <text x="146" y="844" text-anchor="middle" font-size="30" font-weight="600" fill="#2f2a25">Bedroom</text>
+    <rect x="944" y="36" width="220" height="52" rx="26" fill="#111827" fill-opacity="0.72"/>
+    <text x="1054" y="71" text-anchor="middle" font-size="22" font-weight="700" letter-spacing="3" fill="#ffffff">DEMO IMAGE</text>
+  </g>
+</svg>

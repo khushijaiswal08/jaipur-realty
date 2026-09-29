@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Floor plan (demo image)">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7efdd"/>
+      <stop offset="1" stop-color="#ecdcb8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <rect x="150" y="130" width="900" height="620" fill="#ffffff" stroke="#35291a" stroke-width="10"/>
+      <line x1="560" y1="130" x2="560" y2="480" stroke="#35291a" stroke-width="6"/>
+      <line x1="150" y1="480" x2="1050" y2="480" stroke="#35291a" stroke-width="6"/>
+      <line x1="800" y1="480" x2="800" y2="750" stroke="#35291a" stroke-width="6"/>
+      <line x1="800" y1="130" x2="800" y2="480" stroke="#35291a" stroke-width="6"/>
+      <g font-family="system-ui, sans-serif" font-size="28" fill="#35291a" text-anchor="middle">
+        <text x="355" y="310">Living / Dining</text><text x="680" y="310">Bedroom 1</text>
+        <text x="925" y="310">Bedroom 2</text><text x="475" y="620">Kitchen &amp; Utility</text>
+        <text x="925" y="620">Bath</text>
+      </g>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <rect x="36" y="804" width="230" height="60" rx="30" fill="#ffffff" fill-opacity="0.88"/>
+    <text x="151" y="844" text-anchor="middle" font-size="30" font-weight="600" fill="#35291a">Floor plan</text>
+    <rect x="944" y="36" width="220" height="52" rx="26" fill="#111827" fill-opacity="0.72"/>
+    <text x="1054" y="71" text-anchor="middle" font-size="22" font-weight="700" letter-spacing="3" fill="#ffffff">DEMO IMAGE</text>
+  </g>
+</svg>
