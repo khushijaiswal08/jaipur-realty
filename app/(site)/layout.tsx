@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { FloatingWhatsApp } from "@/components/layout/floating-whatsapp";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { CompareTray } from "@/components/property/compare-controls";
 import { getLocalityLinks } from "@/services/locality.service";
 
 export default async function SiteLayout({ children }: { children: ReactNode }) {
@@ -20,6 +21,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
       </main>
       <SiteFooter localities={localities} />
       <FloatingWhatsApp />
+      <CompareTray />
     </>
   );
 }

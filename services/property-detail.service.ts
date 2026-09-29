@@ -252,6 +252,17 @@ export async function getPropertyCardsByIds(ids: string[]): Promise<PropertyCard
   return ids.map((id) => byId.get(id)).filter((p): p is PropertyCardDTO => Boolean(p));
 }
 
+/** Full details for a set of ids, preserving order (compare page — SPEC §16). */
+export async function getPropertyDetailsByIds(ids: string[]): Promise<PropertyDetailDTO[]> {
+  if (!ids.length) return [];
+  const rows = await db.property.findMany({
+    where: { id: { in: ids.slice(0, 3) }, status: { in: [...PUBLIC_DETAIL_STATUSES] } },
+    include: propertyDetailInclude,
+  });
+  const byId = new Map(rows.map((r) => [r.id, toDetail(r)]));
+  return ids.map((id) => byId.get(id)).filter((p): p is PropertyDetailDTO => Boolean(p));
+}
+
 /** Slugs for generateStaticParams — prerender the most recent public listings. */
 export async function getRecentPropertySlugs(limit = 50): Promise<string[]> {
   const rows = await db.property.findMany({

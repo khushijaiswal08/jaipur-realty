@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { siteConfig } from "@/lib/config";
 import { THEME } from "@/lib/constants/theme";
+import { pageRobots } from "@/lib/seo/robots";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   description: defaultDescription,
   applicationName: siteConfig.name,
   // SPEC §33: everything is noindex until NEXT_PUBLIC_ALLOW_INDEXING=true.
-  robots: siteConfig.allowIndexing ? { index: true, follow: true } : { index: false, follow: false },
+  robots: pageRobots(),
   verification: siteConfig.analytics.googleSiteVerification ? { google: siteConfig.analytics.googleSiteVerification } : undefined,
   openGraph: {
     type: "website",

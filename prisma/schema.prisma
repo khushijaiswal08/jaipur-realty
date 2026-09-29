@@ -310,6 +310,8 @@ model Property {
   superBuiltUpArea Float?
   plotArea         Float?
   areaDisplayUnit  AreaUnit @default(SQFT)
+  /// Denormalised headline area (SPEC §53.3) for area filters and sorting; set on every save.
+  primaryAreaSqft  Float?
   plotLengthFt     Float?
   plotWidthFt      Float?
 
@@ -373,6 +375,7 @@ model Property {
   @@index([localityId, status])
   @@index([cityId, status])
   @@index([status, price])
+  @@index([status, primaryAreaSqft])
   @@index([status, bedrooms])
   @@index([isFeatured, status])
   @@index([status, publishedAt])

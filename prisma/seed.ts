@@ -234,6 +234,7 @@ async function main() {
       bathrooms: p.bathrooms ?? null,
       balconies: p.balconies ?? null,
       ...areas,
+      primaryAreaSqft: primary?.sqft ?? null,
       plotLengthFt: p.plotLengthFt ?? null,
       plotWidthFt: p.plotWidthFt ?? null,
       floorNumber: p.floorNumber ?? null,
