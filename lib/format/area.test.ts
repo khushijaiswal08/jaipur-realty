@@ -4,6 +4,7 @@ import {
   convertArea,
   formatArea,
   formatAreaDual,
+  formatAreaRange,
   formatAreaValue,
   formatDimensions,
   getPrimaryArea,
@@ -32,6 +33,14 @@ describe("area conversion & formatting (SPEC §53)", () => {
     expect(formatArea(null)).toBe("—");
     expect(formatArea(0)).toBe("—");
     expect(formatArea(-10)).toBe("—");
+  });
+
+  it("formats area ranges", () => {
+    expect(formatAreaRange(780, 850)).toBe("780 – 850 sq ft");
+    expect(formatAreaRange(1800, 1800, "SQYD")).toBe("200 sq yd");
+    expect(formatAreaRange(1350, 2700, "SQYD")).toBe("150 – 300 sq yd");
+    expect(formatAreaRange(null, null)).toBe("—");
+    expect(formatAreaRange(null, 500)).toBe("500 sq ft");
   });
 
   it("formats dual units and dimensions", () => {

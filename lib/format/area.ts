@@ -67,6 +67,17 @@ export function formatAreaDual(sqft: number | null | undefined, unit: AreaUnit):
   return `${formatArea(sqft)} (${formatArea(sqft, unit)})`;
 }
 
+/** "780 – 850 sq ft", "200 sq yd" (equal bounds), or "—". Values in sq ft. */
+export function formatAreaRange(minSqft: number | null | undefined, maxSqft: number | null | undefined, unit: AreaUnit = "SQFT"): string {
+  const lo = isValidArea(minSqft) ? minSqft : null;
+  const hi = isValidArea(maxSqft) ? maxSqft : null;
+  if (lo === null && hi === null) return "—";
+  if (lo === null || hi === null || Math.abs(lo - hi) < 1) return formatArea((lo ?? hi)!, unit);
+  const digits = WHOLE_NUMBER_UNITS.has(unit) ? 0 : 2;
+  const a = formatNumberIN(roundHalfUp(convertArea(Math.min(lo, hi), "SQFT", unit), digits), digits);
+  return `${a} – ${formatArea(Math.max(lo, hi), unit)}`;
+}
+
 /** "30 × 60 ft" */
 export function formatDimensions(widthFt: number | null | undefined, lengthFt: number | null | undefined): string | null {
   if (!isValidArea(widthFt) || !isValidArea(lengthFt)) return null;
