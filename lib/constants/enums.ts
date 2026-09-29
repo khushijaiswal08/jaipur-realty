@@ -30,7 +30,13 @@ export const TRANSACTION_TYPE_LABELS: Record<TransactionType, string> = {
   RENT: "Rent",
 };
 
-/** Verb form for headings: "for Sale" / "for Rent". */
+/** Card/badge form: "For sale" / "For rent". */
+export const TRANSACTION_TYPE_BADGE: Record<TransactionType, string> = {
+  SALE: "For sale",
+  RENT: "For rent",
+};
+
+/** Phrase for titles and headings: "for Sale" / "for Rent". */
 export const TRANSACTION_TYPE_PHRASE: Record<TransactionType, string> = {
   SALE: "for Sale",
   RENT: "for Rent",

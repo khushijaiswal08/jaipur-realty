@@ -8,9 +8,9 @@
   <rect width="600" height="600" fill="url(#bg)"/>
   <circle cx="300" cy="250" r="110" fill="#d7b48f"/><path d="M 100 600 a 200 190 0 0 1 400 0 z" fill="#8a5a1f"/>
   <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
-    <rect x="36" y="504" width="220" height="60" rx="30" fill="#ffffff" fill-opacity="0.88"/>
-    <text x="146" y="544" text-anchor="middle" font-size="30" font-weight="600" fill="#35291a">Agent</text>
-    <rect x="344" y="36" width="220" height="52" rx="26" fill="#111827" fill-opacity="0.72"/>
-    <text x="454" y="71" text-anchor="middle" font-size="22" font-weight="700" letter-spacing="3" fill="#ffffff">DEMO IMAGE</text>
+    <rect x="36" y="504" width="325" height="60" rx="30" fill="#ffffff" fill-opacity="0.9"/>
+    <text x="100.5" y="544" text-anchor="middle" font-size="30" font-weight="600" fill="#35291a">Agent</text>
+    <rect x="165" y="512" width="188" height="44" rx="22" fill="#111827" fill-opacity="0.78"/>
+    <text x="259" y="542" text-anchor="middle" font-size="20" font-weight="700" letter-spacing="3" fill="#ffffff">DEMO IMAGE</text>
   </g>
 </svg>

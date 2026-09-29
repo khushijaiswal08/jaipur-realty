@@ -16,9 +16,9 @@
       <rect x="300" y="740" width="600" height="90" rx="12" fill="#7cc3dd" stroke="#4f98b3" stroke-width="4"/>
       <g transform="translate(110 670) scale(1.2)"><rect x="-8" y="-10" width="16" height="70" fill="#7a5a3a"/><circle cx="0" cy="-40" r="52" fill="#6b8f4e"/><circle cx="-30" cy="-10" r="34" fill="#6b8f4e"/><circle cx="32" cy="-12" r="36" fill="#6b8f4e"/></g><g transform="translate(1090 670) scale(1.1)"><rect x="-8" y="-10" width="16" height="70" fill="#7a5a3a"/><circle cx="0" cy="-40" r="52" fill="#6b8f4e"/><circle cx="-30" cy="-10" r="34" fill="#6b8f4e"/><circle cx="32" cy="-12" r="36" fill="#6b8f4e"/></g>
   <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
-    <rect x="36" y="804" width="298" height="60" rx="30" fill="#ffffff" fill-opacity="0.88"/>
-    <text x="185" y="844" text-anchor="middle" font-size="30" font-weight="600" fill="#35291a">Villa exterior</text>
-    <rect x="944" y="36" width="220" height="52" rx="26" fill="#111827" fill-opacity="0.72"/>
-    <text x="1054" y="71" text-anchor="middle" font-size="22" font-weight="700" letter-spacing="3" fill="#ffffff">DEMO IMAGE</text>
+    <rect x="36" y="804" width="478" height="60" rx="30" fill="#ffffff" fill-opacity="0.9"/>
+    <text x="177" y="844" text-anchor="middle" font-size="30" font-weight="600" fill="#35291a">Villa exterior</text>
+    <rect x="318" y="812" width="188" height="44" rx="22" fill="#111827" fill-opacity="0.78"/>
+    <text x="412" y="842" text-anchor="middle" font-size="20" font-weight="700" letter-spacing="3" fill="#ffffff">DEMO IMAGE</text>
   </g>
 </svg>

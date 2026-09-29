@@ -20,8 +20,13 @@ const PALETTES: Record<string, Palette> = {
   interior: { skyTop: "#f6f1ea", skyBottom: "#ece3d6", ground: "#d8c7ae", accent: "#9a5b3c", ink: "#2f2a25", soft: "#fffdf9" },
 };
 
+// Labels sit bottom-left only: cards overlay badges top-left, a heart top-right and a photo
+// count bottom-right, so any other corner would be covered.
 function frame(p: Palette, body: string, caption: string, width = W, height = H): string {
-  const pillW = Math.max(220, caption.length * 17 + 60);
+  const captionW = caption.length * 17 + 44;
+  const demoW = 196;
+  const pillW = captionW + demoW;
+  const y = height - 96;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="${caption} (demo image)">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
@@ -32,10 +37,10 @@ function frame(p: Palette, body: string, caption: string, width = W, height = H)
   <rect width="${width}" height="${height}" fill="url(#bg)"/>
   ${body}
   <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
-    <rect x="36" y="${height - 96}" width="${pillW}" height="60" rx="30" fill="#ffffff" fill-opacity="0.88"/>
-    <text x="${36 + pillW / 2}" y="${height - 56}" text-anchor="middle" font-size="30" font-weight="600" fill="${p.ink}">${caption}</text>
-    <rect x="${width - 256}" y="36" width="220" height="52" rx="26" fill="#111827" fill-opacity="0.72"/>
-    <text x="${width - 146}" y="71" text-anchor="middle" font-size="22" font-weight="700" letter-spacing="3" fill="#ffffff">DEMO IMAGE</text>
+    <rect x="36" y="${y}" width="${pillW}" height="60" rx="30" fill="#ffffff" fill-opacity="0.9"/>
+    <text x="${36 + captionW / 2}" y="${y + 40}" text-anchor="middle" font-size="30" font-weight="600" fill="${p.ink}">${caption}</text>
+    <rect x="${36 + captionW}" y="${y + 8}" width="${demoW - 8}" height="44" rx="22" fill="#111827" fill-opacity="0.78"/>
+    <text x="${36 + captionW + (demoW - 8) / 2}" y="${y + 38}" text-anchor="middle" font-size="20" font-weight="700" letter-spacing="3" fill="#ffffff">DEMO IMAGE</text>
   </g>
 </svg>
 `;
