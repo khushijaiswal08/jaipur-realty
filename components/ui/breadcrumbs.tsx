@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { cn } from "@/lib/utils";
 
 export interface Crumb {
@@ -7,10 +9,11 @@ export interface Crumb {
   href?: string;
 }
 
-/** Visual breadcrumbs. The matching BreadcrumbList JSON-LD is emitted by lib/seo (SPEC §32). */
+/** Visual breadcrumbs plus the matching BreadcrumbList JSON-LD (SPEC §32). */
 export function Breadcrumbs({ items, className, tone = "light" }: { items: Crumb[]; className?: string; tone?: "light" | "dark" }) {
   return (
     <nav aria-label="Breadcrumb" className={cn("text-sm", className)}>
+      <JsonLd data={breadcrumbJsonLd(items)} />
       <ol className="flex flex-wrap items-center gap-1">
         {items.map((item, i) => {
           const last = i === items.length - 1;

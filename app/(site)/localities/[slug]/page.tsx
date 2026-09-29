@@ -10,6 +10,8 @@ import { CallButton, WhatsAppButton } from "@/components/shared/contact-buttons"
 import { FaqList, Paragraphs } from "@/components/shared/detail-sections";
 import { LocationMap } from "@/components/shared/location-map";
 import { SmartImage } from "@/components/shared/smart-image";
+import { JsonLd } from "@/components/seo/json-ld";
+import { faqJsonLd, localityJsonLd } from "@/lib/seo/jsonld";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { buttonVariants } from "@/components/ui/button";
 import { Container, Section, SectionHeading } from "@/components/ui/layout-primitives";
@@ -65,6 +67,7 @@ export default async function LocalityPage({ params }: PageProps<"/localities/[s
 
   return (
     <>
+      <JsonLd data={[localityJsonLd(l), faqJsonLd(l.faqs)]} />
       <section className="relative overflow-hidden bg-ink-950">
         <SmartImage src={l.image.url} alt="" fill priority sizes="100vw" className="object-cover opacity-35" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/85 to-ink-950/40" aria-hidden="true" />

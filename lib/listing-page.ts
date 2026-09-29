@@ -29,8 +29,9 @@ export async function listingMetadata(params: RawSearchParams, tx: TransactionTy
   const heading = listingHeading(filters, new Map(localities.map((l) => [l.slug, l.name])));
   const basePath = options.fixedLocality ? `${listingPath(tx)}/${options.fixedLocality}` : listingPath(tx);
   const rest = options.fixedLocality ? { ...filters, localities: filters.localities.filter((l) => l !== options.fixedLocality) } : filters;
-  const qs = toSearchParams(rest, { sort: "relevance", page: 1 }).toString();
   const index = shouldIndexListing(filters);
+  // Indexable paginated pages keep a self-referencing canonical (page 2 ≠ page 1).
+  const qs = toSearchParams(rest, { sort: "relevance", page: index ? filters.page : 1 }).toString();
   const canonical = index && qs ? `${basePath}?${qs}` : basePath;
   const title = filters.page > 1 ? `${heading} — Page ${filters.page}` : heading;
   const description = listingDescription(filters, heading, 0);

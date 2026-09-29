@@ -22,6 +22,8 @@ import {
 import { LocationMap } from "@/components/shared/location-map";
 import { ShareButton } from "@/components/shared/share-button";
 import { VideoEmbed } from "@/components/shared/video-embed";
+import { JsonLd } from "@/components/seo/json-ld";
+import { faqJsonLd, projectJsonLd } from "@/lib/seo/jsonld";
 import { Badge, DemoBadge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { buttonVariants } from "@/components/ui/button";
@@ -99,6 +101,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
 
   return (
     <>
+      <JsonLd data={[projectJsonLd(p), p.isDemo ? null : faqJsonLd(p.faqs)]} />
       <Container className="py-6 sm:py-8">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Projects", href: "/projects" }, { label: p.name }]} />
 

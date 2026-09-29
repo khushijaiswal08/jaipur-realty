@@ -23,6 +23,8 @@ import {
 import { LocationMap } from "@/components/shared/location-map";
 import { ShareButton } from "@/components/shared/share-button";
 import { VideoEmbed } from "@/components/shared/video-embed";
+import { JsonLd } from "@/components/seo/json-ld";
+import { faqJsonLd, propertyJsonLd } from "@/lib/seo/jsonld";
 import { Badge, DemoBadge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Container, SectionHeading } from "@/components/ui/layout-primitives";
@@ -98,6 +100,7 @@ export default async function PropertyPage({ params }: PageProps<"/property/[slu
 
   return (
     <>
+      <JsonLd data={[propertyJsonLd(p), p.isDemo ? null : faqJsonLd(p.faqs)]} />
       <Container className="py-6 sm:py-8">
         <Breadcrumbs
           items={[

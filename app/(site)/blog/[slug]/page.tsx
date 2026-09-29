@@ -7,6 +7,8 @@ import { Banner } from "@/components/shared/detail-sections";
 import { Markdown } from "@/components/shared/markdown";
 import { ShareButton } from "@/components/shared/share-button";
 import { SmartImage } from "@/components/shared/smart-image";
+import { JsonLd } from "@/components/seo/json-ld";
+import { blogPostingJsonLd } from "@/lib/seo/jsonld";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Container, SectionHeading } from "@/components/ui/layout-primitives";
 import { absoluteUrl, siteConfig } from "@/lib/config";
@@ -53,6 +55,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
 
   return (
     <>
+      <JsonLd data={blogPostingJsonLd(post)} />
       <Container className="py-8 sm:py-10">
         <Breadcrumbs
           items={[
