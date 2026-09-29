@@ -69,7 +69,7 @@ export function Pill({ tone = "gray", children }: { tone?: PillTone; children: R
 /** Scrollable table wrapper with consistent styling. */
 export function Table({ children, minWidth = "48rem" }: { children: ReactNode; minWidth?: string }) {
   return (
-    <div className="overflow-x-auto rounded-card border border-ink-100 bg-white">
+    <div className="relative overflow-x-auto rounded-card border border-ink-100 bg-white">
       <table className="w-full text-sm" style={{ minWidth }}>
         {children}
       </table>

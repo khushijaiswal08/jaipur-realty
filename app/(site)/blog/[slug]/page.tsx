@@ -89,7 +89,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
             </div>
           ) : null}
           <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-2xl bg-ink-50">
-            <SmartImage src={post.cover.url} alt={post.cover.alt} fill priority sizes="(min-width: 768px) 768px, 100vw" className="object-cover" />
+            <SmartImage src={post.cover.url} alt={post.cover.alt} fill preload sizes="(min-width: 768px) 768px, 100vw" className="object-cover" />
           </div>
 
           {toc.length >= 3 ? (

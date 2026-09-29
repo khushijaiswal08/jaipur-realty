@@ -77,23 +77,36 @@ sq ft/sq yd, phone, IST dates) · lib/whatsapp · lib/seo · lib/analytics · li
 - [x] Email notifications via SMTP after the response (console fallback); first-touch UTM attribution; analytics events
 - [x] Verified end-to-end in the browser (enquiry, repeat visit request, owner listing)
 
-### Phase 8 — Admin authentication & dashboard ⏳
-Login, sessions, proxy guard, roles, `admin:create` script, dashboard KPIs.
+### Phase 8 — Admin authentication & dashboard ✅
+- [x] bcrypt (cost 12) passwords, DB-backed revocable sessions (SHA-256 token hash), `__Host-` cookie in production
+- [x] `proxy.ts` guard (redirect + `noindex` + `no-store`), server-side `requireAdmin` / capability matrix per role
+- [x] Login rate limit, constant-time failure path, `npm run admin:create`
+- [x] Dashboard: listing/lead KPIs, recent leads, leads by source, upcoming visits, most viewed
 
-### Phase 9 — Property CRUD & lead management ⏳
-Property/project CRUD, image uploads (local/S3), lead inbox, lead detail with activity
-timeline, site visits, owner-listing review, CSV export, audit log.
+### Phase 9 — Property CRUD & lead management ✅
+- [x] Property / project / locality / agent CRUD with zod validation, publish workflow and on-demand revalidation
+- [x] Image uploads: format sniffing, EXIF rotation, resize ≤ 2400 px, WebP, metadata stripped; local disk or S3-compatible storage
+- [x] Lead inbox (filters, search), lead detail with activity timeline, status/assignment, manual leads, CSV export
+- [x] Site-visit scheduling, owner-listing review → draft property conversion, admin users, audit log
 
-### Phase 10 — Blog & content management ⏳
-Blog pages; admin CRUD for posts, categories, FAQs, testimonials; about, contact, FAQ and
-legal pages; tools (EMI, area converter, stamp duty).
+### Phase 10 — Blog & content management ✅
+- [x] Blog index, categories, posts (Markdown, TOC, reading time), scheduled publishing
+- [x] Admin CRUD for posts, categories, FAQs, testimonials; demo-content purge
+- [x] About, contact, FAQ, legal pages (flagged for legal review); EMI, area-converter and stamp-duty tools
 
-### Phase 11 — Technical SEO ⏳
-Metadata templates, canonical URLs, JSON-LD, sitemap, robots, OG images.
+### Phase 11 — Technical SEO ✅
+- [x] Metadata templates, canonical URLs (incl. paginated/filtered listings), explicit robots on every page
+- [x] JSON-LD: Organization/RealEstateAgent, WebSite, BreadcrumbList, listings, projects, articles, FAQ
+- [x] `sitemap.xml` (demo content excluded), `robots.txt`, dynamic OG images with ₹ formatting
 
-### Phase 12 — Analytics, performance, validation, security, responsive testing ⏳
-GA4/GTM/Pixel/Clarity loaders and events, consent banner, view tracking, CSP and headers,
-accessibility pass, mobile checks.
+### Phase 12 — Analytics, performance, validation, security, responsive testing ✅
+- [x] GA4 / GTM / Meta Pixel / Clarity loaders (only when IDs are set), optional consent banner, `track()` + `data-track` click events, search events
+- [x] First-party view beacon with 30-min de-duplication feeding "Most viewed" on the dashboard
+- [x] CSP + HSTS (production https only), existing nosniff / frame / referrer / permissions headers
+- [x] Stale property slugs 308 to the current slug via the ref code; real 404 status codes kept (no streamed `loading.tsx`)
+- [x] Accessibility / responsive audit at 375 px and desktop: fixed page overflow from `sr-only` text in scroll containers, heading order, 404/error `h1`, invalid `<address>` nesting, admin dashboard grid overflow
+- [x] `next/image` `priority` → `preload`; npm overrides clear the Prisma CLI advisories (0 vulnerabilities)
+- [x] Verified the production build under the production CSP (hydration, no violations)
 
 ### Phase 13 — Production build & deployment preparation ⏳
 Deployment guide, Dockerfile, launch checklist, final gates.

@@ -79,7 +79,9 @@ phone or email is still set. While placeholders are in use, the footer also show
 | Rate limiting | In-memory, per server instance | Fine for a single VPS/container. Use a shared store (e.g. Redis/Upstash) if you scale horizontally. |
 | Uploads | `STORAGE_DRIVER=local` → `storage/uploads/`, served via `/media/...` | Needs a persistent disk. Use `s3` (S3/R2/Spaces/MinIO) on serverless hosts. |
 | Email | nodemailer over SMTP; console fallback | Any SMTP provider works (Gmail Workspace, SES, Zoho, Brevo…). |
-| Analytics consent | Off by default (`NEXT_PUBLIC_REQUIRE_ANALYTICS_CONSENT=false`) | Set `true` to hold analytics until the visitor opts in. |
+| Analytics consent | Off by default (`NEXT_PUBLIC_REQUIRE_ANALYTICS_CONSENT=false`) | Set `true` to hold analytics until the visitor opts in (banner with "Allow" / "Essential only"). |
+| View counts | First-party beacon (`/api/track/view`); one view per hashed visitor per listing per 30 min; bots ignored; no cookies | Independent of GA, so the admin dashboard works without analytics IDs. |
+| Security headers | CSP allowlisting GA4/GTM, Meta, Clarity, Turnstile, OSM/Google Maps and youtube-nocookie; HSTS only when `NEXT_PUBLIC_SITE_URL` is https in production | Add hosts in `next.config.ts` if you embed other services. |
 | Language | English UI; Indian number formatting; IST for all dates | Hindi can be added later. |
 | Brand colours | Terracotta (Jaipur) primary + deep navy, defined once in `app/globals.css` | Swap tokens when a brand palette exists. |
 | Stamp duty rates | Indicative constants with an "effective from" date and a disclaimer | Update `lib/constants/tools.ts` when rates change. |
@@ -94,6 +96,13 @@ phone or email is still set. While placeholders are in use, the footer also show
 
 ## 6. Known limitations
 
-- `npm audit` reports advisories in transitive dependencies of the **Prisma CLI** (dev-time only:
-  `deepmerge-ts`, `mysql2`). They are not part of the runtime bundle. npm's suggested fix
-  (downgrading Prisma to v6) is not applied; revisit when Prisma ships updated dependencies.
+- The Prisma CLI (dev dependency) pulls in `deepmerge-ts` 7 and `mysql2` ≤ 3.23, which have
+  advisories. `package.json` `overrides` pin the fixed releases (`deepmerge-ts` 8, `mysql2`
+  3.24); `prisma validate / generate / migrate` were re-verified with them and `npm audit`
+  reports 0 vulnerabilities. Remove the overrides once Prisma ships updated dependencies.
+- View de-duplication and rate limits are held in memory per server instance (plus a DB check
+  for views). Behind multiple instances, counts can be slightly high until a shared store is added.
+- The CSP keeps `'unsafe-inline'` for scripts (Next.js bootstrap, JSON-LD and the analytics
+  snippets). A nonce-based CSP would force every page to render dynamically and lose ISR.
+- There is deliberately no `loading.tsx` on public routes: a streamed shell turns 404s and
+  redirects into `200` responses, which hurts SEO. Listing filters show their own pending state.

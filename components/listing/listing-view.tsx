@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { SearchX } from "lucide-react";
+import { SearchTracker } from "@/components/analytics/search-tracker";
 import { PropertyGrid } from "@/components/property/property-card";
 import { WhatsAppButton } from "@/components/shared/contact-buttons";
 import { Breadcrumbs, type Crumb } from "@/components/ui/breadcrumbs";
@@ -50,6 +51,7 @@ export function ListingView({ filters: f, result, heading, localities, amenities
 
   return (
     <ListingNavigationProvider>
+      <SearchTracker signature={formKey} transaction={f.transactionType} results={result.total} facets={activeFacetCount(f)} term={f.q} />
       <div className="border-b border-ink-100 bg-white">
         <Container className="py-6 sm:py-8">
           <Breadcrumbs items={breadcrumbs} />

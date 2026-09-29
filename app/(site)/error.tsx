@@ -16,6 +16,7 @@ export default function SiteError({ error, reset }: { error: Error & { digest?: 
     <Container className="py-16 sm:py-24">
       <EmptyState
         icon={<TriangleAlert />}
+        headingLevel={1}
         title="Something went wrong"
         description={
           <>

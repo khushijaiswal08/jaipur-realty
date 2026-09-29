@@ -59,6 +59,7 @@ export function ShortlistView() {
           </Button>
         </div>
       </div>
+      <h2 className="sr-only">Saved properties</h2>
       <PropertyGrid properties={items} className="lg:grid-cols-3 xl:grid-cols-3" />
     </>
   );

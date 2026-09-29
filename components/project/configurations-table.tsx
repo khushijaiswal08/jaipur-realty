@@ -13,7 +13,7 @@ export function ConfigurationsTable({ configurations }: { configurations: Config
   const unitFor = (c: ConfigurationDTO): AreaUnit => (PROPERTY_TYPE_CATEGORY[c.propertyType] === "LAND" ? "SQYD" : "SQFT");
 
   return (
-    <div className="overflow-x-auto rounded-card border border-ink-100 bg-white">
+    <div className="relative overflow-x-auto rounded-card border border-ink-100 bg-white">
       <table className="w-full min-w-[34rem] text-sm">
         <caption className="sr-only">Unit configurations, areas and prices</caption>
         <thead className="bg-sand-100 text-left text-xs uppercase tracking-wider text-ink-500">

@@ -70,7 +70,7 @@ export function CompareView() {
   }
 
   return (
-    <div className="overflow-x-auto rounded-card border border-ink-100 bg-white shadow-card">
+    <div className="relative overflow-x-auto rounded-card border border-ink-100 bg-white shadow-card">
       <table className="w-full min-w-[40rem] table-fixed text-sm">
         <caption className="sr-only">Property comparison</caption>
         <thead>

@@ -69,7 +69,7 @@ export default async function LocalityPage({ params }: PageProps<"/localities/[s
     <>
       <JsonLd data={[localityJsonLd(l), faqJsonLd(l.faqs)]} />
       <section className="relative overflow-hidden bg-ink-950">
-        <SmartImage src={l.image.url} alt="" fill priority sizes="100vw" className="object-cover opacity-35" />
+        <SmartImage src={l.image.url} alt="" fill preload sizes="100vw" className="object-cover opacity-35" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/85 to-ink-950/40" aria-hidden="true" />
         <Container className="relative py-10 sm:py-14">
           <Breadcrumbs tone="dark" items={[{ label: "Home", href: "/" }, { label: "Localities", href: "/localities" }, { label: l.name }]} />

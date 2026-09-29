@@ -25,7 +25,7 @@ export function Logo({ tone = "dark", className }: { tone?: "dark" | "light"; cl
           height={40}
           className="h-9 w-auto"
           unoptimized={siteConfig.logoUrl.endsWith(".svg")}
-          priority
+          preload
         />
       ) : (
         <>

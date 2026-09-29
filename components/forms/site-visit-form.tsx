@@ -67,7 +67,7 @@ export function SiteVisitForm({ context, contact, whatsappMessage, trackContext 
       <fieldset>
         <legend className="mb-2 text-sm font-medium text-ink-800">Choose a day</legend>
         {dates ? (
-          <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+          <div className="relative -mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
             {dates.map((d) => {
               const at = new Date(`${d}T12:00:00+05:30`);
               return (

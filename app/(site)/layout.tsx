@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Analytics } from "@/components/analytics/analytics";
 import { AttributionCapture } from "@/components/analytics/attribution-capture";
 import { FloatingWhatsApp } from "@/components/layout/floating-whatsapp";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -27,6 +28,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
       <FloatingWhatsApp />
       <CompareTray />
       <AttributionCapture />
+      <Analytics />
     </>
   );
 }

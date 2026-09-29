@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle2, FileDown, MapPin, ShieldCheck } from "lucide-react";
+import { ViewTracker } from "@/components/analytics/view-tracker";
 import { EnquiryForm } from "@/components/forms/enquiry-form";
 import { LeadPanel } from "@/components/forms/lead-panel";
 import { SiteVisitForm } from "@/components/forms/site-visit-form";
@@ -102,6 +103,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
   return (
     <>
       <JsonLd data={[projectJsonLd(p), p.isDemo ? null : faqJsonLd(p.faqs)]} />
+      <ViewTracker projectId={p.id} />
       <Container className="py-6 sm:py-8">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Projects", href: "/projects" }, { label: p.name }]} />
 

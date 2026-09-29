@@ -53,7 +53,7 @@ export function Gallery({ images, title }: { images: GalleryImage[]; title: stri
   return (
     <div>
       {kinds.length > 1 ? (
-        <div role="tablist" aria-label="Image categories" className="mb-3 flex gap-2 overflow-x-auto">
+        <div role="tablist" aria-label="Image categories" className="relative mb-3 flex gap-2 overflow-x-auto">
           {kinds.map((k) => (
             <button
               key={k}
@@ -76,7 +76,7 @@ export function Gallery({ images, title }: { images: GalleryImage[]; title: stri
       ) : null}
 
       {/* Mobile: swipeable strip */}
-      <div className="-mx-4 flex snap-x snap-mandatory gap-2 overflow-x-auto px-4 sm:hidden" aria-label={`${title} photos`}>
+      <div className="relative -mx-4 flex snap-x snap-mandatory gap-2 overflow-x-auto px-4 sm:hidden" aria-label={`${title} photos`}>
         {shown.map((img, i) => (
           <button
             key={img.id}
@@ -85,7 +85,7 @@ export function Gallery({ images, title }: { images: GalleryImage[]; title: stri
             className="relative aspect-[4/3] w-[88%] shrink-0 snap-center overflow-hidden rounded-2xl bg-ink-50"
             aria-label={`Open image ${i + 1} of ${shown.length}: ${img.caption ?? img.alt}`}
           >
-            <SmartImage src={img.url} alt={img.alt} fill sizes="88vw" priority={i === 0} className="object-cover" />
+            <SmartImage src={img.url} alt={img.alt} fill sizes="88vw" preload={i === 0} className="object-cover" />
             <span className="absolute bottom-2 right-2 rounded-full bg-ink-900/80 px-2 py-0.5 text-xs font-semibold text-white">
               {i + 1}/{shown.length}
             </span>
@@ -102,7 +102,7 @@ export function Gallery({ images, title }: { images: GalleryImage[]; title: stri
             className={cn("group relative overflow-hidden rounded-2xl bg-ink-50", second ? "col-span-2 row-span-2" : "")}
             aria-label={`Open gallery: ${first.caption ?? first.alt}`}
           >
-            <SmartImage src={first.url} alt={first.alt} fill priority sizes="(min-width: 1280px) 800px, 66vw" className="object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+            <SmartImage src={first.url} alt={first.alt} fill preload sizes="(min-width: 1280px) 800px, 66vw" className="object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
           </button>
           {[second, third].map((img, n) =>
             img ? (
@@ -165,7 +165,7 @@ export function Gallery({ images, title }: { images: GalleryImage[]; title: stri
             </>
           ) : null}
         </div>
-        <div className="flex justify-center gap-2 overflow-x-auto px-4 py-3">
+        <div className="relative flex justify-center gap-2 overflow-x-auto px-4 py-3">
           {shown.map((img, i) => (
             <button
               key={img.id}

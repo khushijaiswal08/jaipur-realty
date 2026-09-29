@@ -42,7 +42,7 @@ export default async function AdminDashboard({ searchParams }: PageProps<"/admin
         <StatCard label="Upcoming site visits" value={s.upcomingVisits.length} hint="Next 7 days" href={leadsAccess ? "/admin/site-visits" : undefined} />
       </div>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-3">
+      <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-3">
         {leadsAccess ? (
           <Panel title="Recent leads" action={<Link href="/admin/leads" className="text-sm font-semibold text-brand-700">View all</Link>} className="xl:col-span-2">
             {s.recentLeads.length ? (

@@ -20,6 +20,7 @@ export default async function NotFound() {
         <Container className="py-16 sm:py-24">
           <EmptyState
             icon={<SearchX />}
+            headingLevel={1}
             title="We couldn't find that page"
             description="The listing may have been removed or the link may be incorrect. Try browsing properties or a locality below."
           >

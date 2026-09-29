@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowRight, BadgeCheck, Building2, MapPin, ShieldCheck, Star } from "lucide-react";
+import { ViewTracker } from "@/components/analytics/view-tracker";
 import { EnquiryForm } from "@/components/forms/enquiry-form";
 import { LeadPanel } from "@/components/forms/lead-panel";
 import { SiteVisitForm } from "@/components/forms/site-visit-form";
@@ -87,7 +88,13 @@ export default async function PropertyPage({ params }: PageProps<"/property/[slu
   }
 
   const p = await getPropertyBySlug(slug);
-  if (!p) notFound();
+  if (!p) {
+    // Slugs end in the ref code, so an outdated slug (title edited) still resolves → 308 to the current one.
+    const ref = /-(jp\d{3,})$/i.exec(slug)?.[1];
+    const canonical = ref ? await findSlugByRefCode(ref) : null;
+    if (canonical && canonical !== slug) permanentRedirect(propertyUrl(canonical));
+    notFound();
+  }
   const similar = await getSimilarProperties(p);
 
   const contact = p.agent?.contact ?? resolveContact();
@@ -101,6 +108,7 @@ export default async function PropertyPage({ params }: PageProps<"/property/[slu
   return (
     <>
       <JsonLd data={[propertyJsonLd(p), p.isDemo ? null : faqJsonLd(p.faqs)]} />
+      <ViewTracker propertyId={p.id} />
       <Container className="py-6 sm:py-8">
         <Breadcrumbs
           items={[

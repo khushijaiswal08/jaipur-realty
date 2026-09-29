@@ -27,7 +27,7 @@ export function PropertyCard({ property: p, priority = false, className }: { pro
           src={p.cover.url}
           alt={p.cover.alt}
           fill
-          priority={priority}
+          preload={priority}
           sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />

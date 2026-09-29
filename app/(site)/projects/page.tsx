@@ -87,6 +87,7 @@ export default async function ProjectsPage({ searchParams }: PageProps<"/project
       <Container className="py-10">
         {projects.length ? (
           <>
+            <h2 className="sr-only">Project listings</h2>
             <p className="mb-5 text-sm text-ink-500">
               {projects.length} {projects.length === 1 ? "project" : "projects"}
             </p>

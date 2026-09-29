@@ -36,10 +36,10 @@ export default function ContactPage() {
             </div>
             <div className="rounded-card border border-ink-100 bg-white p-5 shadow-card">
               <h2 className="font-semibold text-ink-950">Office</h2>
-              <p className="mt-2 flex gap-2 text-ink-700">
+              <div className="mt-2 flex gap-2 text-ink-700">
                 <MapPin className="mt-1 size-4 shrink-0 text-brand-600" aria-hidden="true" />
                 <address className="not-italic">{formattedAddress()}</address>
-              </p>
+              </div>
               {siteConfig.officeHours ? (
                 <p className="mt-2 flex items-center gap-2 text-ink-700">
                   <Clock className="size-4 shrink-0 text-brand-600" aria-hidden="true" /> {siteConfig.officeHours}
