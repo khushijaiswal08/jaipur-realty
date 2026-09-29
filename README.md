@@ -6,6 +6,7 @@ Property listings (sale & rent), builder projects, Jaipur locality guides, lead 
 - **Spec:** [docs/SPEC.md](docs/SPEC.md)
 - **Placeholders & decisions:** [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md)
 - **Phase plan & progress:** [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md)
+- **Deploying:** [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) · **Before launch:** [docs/LAUNCH_CHECKLIST.md](docs/LAUNCH_CHECKLIST.md)
 
 ## Stack
 
@@ -37,8 +38,19 @@ npm run dev                 # http://localhost:3000
 | `npm run db:reset` | Drop, re-migrate and re-seed (development only) |
 | `npm run db:studio` | Browse the database |
 | `npm run db:purge-demo` | Delete every `isDemo` record |
-| `npm run admin:create` | Create an admin user interactively |
+| `npm run admin:create` | Create an admin user, or reset a password (interactive) |
 | `npm run placeholders` | Regenerate the demo SVG images |
+
+## Production
+
+```bash
+npm run db:deploy && npm run build && npm start
+```
+
+The build reads the database (pages are pre-rendered), so migrate first. `NEXT_PUBLIC_*`
+values are baked in at build time. There is a Docker image (`Dockerfile`,
+`docker-compose.prod.yml` with Postgres and Caddy) and a health endpoint at `/api/health`.
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Where things live
 
@@ -49,7 +61,7 @@ lib/          config/ (env → siteConfig), format/, whatsapp, constants/, seo/,
 services/     data access — the only layer that imports Prisma
 prisma/       schema, migrations, seed + seed-data
 scripts/      admin/demo/placeholder CLIs
-docs/         spec, assumptions, plan
+docs/         spec, assumptions, plan, deployment guide, launch checklist
 ```
 
 Business name, phone, WhatsApp, email, address, logo, map key and analytics IDs are read only from

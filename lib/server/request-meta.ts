@@ -2,7 +2,7 @@ import "server-only";
 
 import { createHash } from "node:crypto";
 import { headers } from "next/headers";
-import { getIpHashSalt } from "@/lib/config/server";
+import { getIpHashSalt, getTrustedProxyCount } from "@/lib/config/server";
 import { toIstDateString } from "@/lib/format/date";
 
 export interface RequestMeta {
@@ -16,9 +16,18 @@ export interface RequestMeta {
 
 const BOT_UA = /bot|crawl|spider|slurp|facebookexternalhit|preview|headless|lighthouse|pingdom|uptime/i;
 
-export function clientIp(h: Headers): string {
-  const forwarded = h.get("x-forwarded-for")?.split(",")[0]?.trim();
-  return forwarded || h.get("x-real-ip") || h.get("cf-connecting-ip") || "0.0.0.0";
+/**
+ * Client IP for rate limiting and visitor hashing. Each proxy appends the address it saw to
+ * X-Forwarded-For, so only the right-most `hops` entries are trustworthy; anything further left
+ * is client-supplied and spoofable.
+ */
+export function clientIp(h: Headers, hops: number = getTrustedProxyCount()): string {
+  const chain = (h.get("x-forwarded-for") ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const fromChain = chain.length ? chain[Math.max(0, chain.length - hops)] : undefined;
+  return fromChain || h.get("x-real-ip")?.trim() || "0.0.0.0";
 }
 
 export function deviceTypeFromUA(ua: string): RequestMeta["deviceType"] {

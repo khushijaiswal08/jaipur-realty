@@ -81,6 +81,8 @@ phone or email is still set. While placeholders are in use, the footer also show
 | Email | nodemailer over SMTP; console fallback | Any SMTP provider works (Gmail Workspace, SES, Zoho, Brevo…). |
 | Analytics consent | Off by default (`NEXT_PUBLIC_REQUIRE_ANALYTICS_CONSENT=false`) | Set `true` to hold analytics until the visitor opts in (banner with "Allow" / "Essential only"). |
 | View counts | First-party beacon (`/api/track/view`); one view per hashed visitor per listing per 30 min; bots ignored; no cookies | Independent of GA, so the admin dashboard works without analytics IDs. |
+| Client IP | Right-most `X-Forwarded-For` entry, stepping back one entry per extra proxy (`TRUSTED_PROXY_COUNT`, default 1) | Left-hand entries are client-supplied and spoofable. The app must sit behind a proxy. |
+| Deployment | Plain `next start` on a VPS, or the standalone Docker image; Caddy for HTTPS | See docs/DEPLOYMENT.md. Uploads directory configurable via `STORAGE_LOCAL_DIR`. |
 | Security headers | CSP allowlisting GA4/GTM, Meta, Clarity, Turnstile, OSM/Google Maps and youtube-nocookie; HSTS only when `NEXT_PUBLIC_SITE_URL` is https in production | Add hosts in `next.config.ts` if you embed other services. |
 | Language | English UI; Indian number formatting; IST for all dates | Hindi can be added later. |
 | Brand colours | Terracotta (Jaipur) primary + deep navy, defined once in `app/globals.css` | Swap tokens when a brand palette exists. |

@@ -108,5 +108,16 @@ sq ft/sq yd, phone, IST dates) · lib/whatsapp · lib/seo · lib/analytics · li
 - [x] `next/image` `priority` → `preload`; npm overrides clear the Prisma CLI advisories (0 vulnerabilities)
 - [x] Verified the production build under the production CSP (hydration, no violations)
 
-### Phase 13 — Production build & deployment preparation ⏳
-Deployment guide, Dockerfile, launch checklist, final gates.
+### Phase 13 — Production build & deployment preparation ✅
+- [x] Optional standalone output (`NEXT_OUTPUT=standalone`) with tracing that excludes `.env`, uploads, docs and dev files
+- [x] Multi-stage `Dockerfile` (non-root runner, health check, `.env` as a BuildKit secret), `.dockerignore`
+- [x] `docker-compose.prod.yml` (Postgres + app + Caddy HTTPS + `tools` for migrations/admin/seed), `Caddyfile`
+- [x] `/api/health` (DB check); configurable upload dir (`STORAGE_LOCAL_DIR`); spoof-resistant client IP (`TRUSTED_PROXY_COUNT`)
+- [x] Standalone server verified locally: pages, redirects, 404s, OG images, uploads + image optimisation, admin sign-in with the production cookie
+- [x] `docs/DEPLOYMENT.md` (VPS + systemd + Caddy/Nginx, Docker Compose, Vercel, backups, monitoring) and `docs/LAUNCH_CHECKLIST.md`
+- [x] Test data from verification removed; database back to the seed state
+- [x] Gates: lint ✔ typecheck ✔ tests ✔ build ✔
+
+## Not verified here
+- The Docker image build itself (Docker isn't installed on the development machine). First build belongs on staging.
+- Real SMTP delivery, Turnstile, GA4/Meta/Clarity with real IDs, and S3 uploads against a real bucket all need live credentials.

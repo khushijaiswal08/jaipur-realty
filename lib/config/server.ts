@@ -29,6 +29,15 @@ export function getIpHashSalt(): string {
   return salt;
 }
 
+/**
+ * Number of reverse proxies in front of the app (Caddy/Nginx = 1, Cloudflare + Caddy = 2).
+ * Used to pick the real client IP out of X-Forwarded-For. Default 1, clamped to 1–5.
+ */
+export function getTrustedProxyCount(): number {
+  const n = Number.parseInt(clean(process.env.TRUSTED_PROXY_COUNT) ?? "1", 10);
+  return Number.isFinite(n) ? Math.min(5, Math.max(1, n)) : 1;
+}
+
 export interface SmtpConfig {
   host: string;
   port: number;
@@ -94,5 +103,7 @@ export function getStorageConfig(): StorageConfig {
       publicUrl: publicUrl.replace(/\/+$/, ""),
     };
   }
-  return { driver: "local", directory: "storage/uploads" };
+  // Relative paths resolve from the server's working directory (the standalone server
+  // switches to its own folder, so set an absolute path there).
+  return { driver: "local", directory: clean(process.env.STORAGE_LOCAL_DIR) ?? "storage/uploads" };
 }

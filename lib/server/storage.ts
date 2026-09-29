@@ -23,7 +23,10 @@ function randomKey(ext: string): string {
 }
 
 export function localRoot(): string {
-  return path.resolve(process.cwd(), "storage", "uploads");
+  const cfg = getStorageConfig();
+  const dir = cfg.driver === "local" ? cfg.directory : "storage/uploads";
+  // turbopackIgnore: a runtime data directory, not something to bundle or trace into the build.
+  return path.resolve(/*turbopackIgnore: true*/ process.cwd(), dir);
 }
 
 /** Resolves a stored key to an absolute path, refusing anything outside the upload root. */
@@ -92,8 +95,8 @@ export async function saveFile(body: Buffer, ext: string, contentType: string): 
     return { key, url: `${cfg.publicUrl}/${key}` };
   }
   const full = resolveLocalPath(key)!;
-  await mkdir(path.dirname(full), { recursive: true });
-  await writeFile(full, body);
+  await mkdir(/*turbopackIgnore: true*/ path.dirname(full), { recursive: true });
+  await writeFile(/*turbopackIgnore: true*/ full, body);
   return { key, url: `${LOCAL_URL_PREFIX}${key}` };
 }
 
@@ -103,7 +106,7 @@ export async function deleteFileByUrl(url: string): Promise<void> {
   try {
     if (url.startsWith(LOCAL_URL_PREFIX)) {
       const full = resolveLocalPath(url.slice(LOCAL_URL_PREFIX.length));
-      if (full) await unlink(full);
+      if (full) await unlink(/*turbopackIgnore: true*/ full);
     } else if (cfg.driver === "s3" && url.startsWith(`${cfg.publicUrl}/`)) {
       await s3Request(cfg, "DELETE", url.slice(cfg.publicUrl.length + 1));
     }
@@ -116,7 +119,7 @@ export async function readLocalFile(key: string): Promise<Buffer | null> {
   const full = resolveLocalPath(key);
   if (!full) return null;
   try {
-    return await readFile(full);
+    return await readFile(/*turbopackIgnore: true*/ full);
   } catch {
     return null;
   }

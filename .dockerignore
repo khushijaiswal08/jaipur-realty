@@ -1,0 +1,15 @@
+# Never send secrets, local state or build output to the Docker daemon.
+.env
+.env.*
+!.env.example
+.git
+.claude
+.next
+node_modules
+generated
+storage
+coverage
+*.log
+*.tsbuildinfo
+Dockerfile
+docker-compose*.yml

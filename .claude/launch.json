@@ -12,6 +12,15 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "start", "--", "-p", "3100"],
       "port": 3100
+    },
+    {
+      "name": "web-standalone",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "-e",
+        "Object.assign(process.env,{PORT:'3200',HOSTNAME:'127.0.0.1',STORAGE_LOCAL_DIR:require('path').resolve('storage/uploads')});require('./.next/standalone/server.js')"
+      ],
+      "port": 3200
     }
   ]
 }

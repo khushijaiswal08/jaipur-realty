@@ -54,6 +54,13 @@ const csp = [
   .join("; ");
 
 const nextConfig: NextConfig = {
+  // Self-contained server bundle for the Docker image (see Dockerfile / docs/DEPLOYMENT.md).
+  // Off by default so `npm start` keeps working on a plain Node host.
+  output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
+  // Never ship secrets, uploads, docs or dev-only files inside the server bundle.
+  outputFileTracingExcludes: {
+    "*": [".env", ".env.*", "storage/**", "docs/**", "scripts/**", "test/**", "prisma/seed*", "prisma/seed-data/**", "**/*.test.ts", ".claude/**", "lib/**/*.ts"],
+  },
   poweredByHeader: false,
   reactStrictMode: true,
   images: {

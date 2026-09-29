@@ -1,0 +1,91 @@
+# Production stack for a single VPS: PostgreSQL + app + Caddy (automatic HTTPS).
+# Full walkthrough: docs/DEPLOYMENT.md → "Option B — Docker Compose".
+#
+#   docker compose -f docker-compose.prod.yml up -d db
+#   docker compose -f docker-compose.prod.yml run --rm tools npx prisma migrate deploy
+#   docker compose -f docker-compose.prod.yml run --rm tools npm run admin:create
+#   docker compose -f docker-compose.prod.yml build app
+#   docker compose -f docker-compose.prod.yml up -d
+#
+# Values like ${POSTGRES_PASSWORD} and ${DOMAIN} are read from .env next to this file.
+
+name: jaipur-realty
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: realestate
+      POSTGRES_USER: realestate
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # Published on the host's loopback only, so `docker compose build app` (which pre-renders
+    # pages from the database) can reach it. Never exposed to the internet.
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U realestate -d realestate"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # One-off tasks: migrations, admin accounts, seed/purge demo content.
+  tools:
+    profiles: ["tools"]
+    build:
+      context: .
+      target: tools
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app:
+    image: jaipur-realty:latest
+    build:
+      context: .
+      target: runner
+      # The build connects to Postgres through the loopback port above; "db" resolves there so
+      # the same DATABASE_URL works at build time and at runtime.
+      network: host
+      extra_hosts:
+        - "db:127.0.0.1"
+      secrets:
+        - dotenv
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - uploads:/app/storage
+    expose:
+      - "3000"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:?Set DOMAIN in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
+secrets:
+  dotenv:
+    file: ./.env
+
+volumes:
+  pgdata:
+  uploads:
+  caddy_data:
+  caddy_config:
