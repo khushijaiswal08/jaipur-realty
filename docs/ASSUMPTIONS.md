@@ -45,6 +45,16 @@ phone or email is still set. While placeholders are in use, the footer also show
 - The 8 general FAQs are process-only (no legal or tax claims) and are **not** demo-flagged —
   review the wording, especially the brokerage answer, before launch.
 
+## 2a. Copy, legal text and calculator rates — review before launch
+
+| Item | Where | Status |
+|---|---|---|
+| Home "why us", hero and About copy | `lib/constants/marketing.ts` | Placeholder marketing copy. No statistics are claimed. |
+| Privacy policy, terms, disclaimer | `app/(site)/privacy-policy`, `terms`, `disclaimer` | Templates (DPDP-aligned) showing a "pending legal review" notice until `LEGAL_REVIEWED = true` in `components/shared/legal-page.tsx`. |
+| Stamp duty & registration rates | `lib/constants/tools.ts` | **Indicative placeholders** (6% / 5% / 5.5% + 1% registration). Verify current Rajasthan rates, then set `verified: true` and update `effectiveFrom`. |
+| EMI defaults (8.5%, 20 years) | `lib/constants/tools.ts` | Reasonable defaults, not a lender quote. |
+| Brokerage FAQ answer | seeded FAQ "Do you charge buyers or tenants a fee?" | Generic wording — replace with your actual policy. |
+
 ## 3. Locality data (SPEC §3)
 
 - The 12 localities, zones, pincodes, centroid coordinates, descriptions and connectivity notes

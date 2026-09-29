@@ -30,6 +30,16 @@ export const WHY_US = [
   },
 ] as const;
 
+export const ABOUT_COPY = {
+  title: "Your local partner for Jaipur property",
+  intro:
+    "We help families, investors and businesses buy, sell and rent property across Jaipur — from apartments in Vaishali Nagar and Mansarovar to plots on Ajmer Road and offices on Tonk Road.",
+  story: [
+    "Buying or renting a home is one of the biggest decisions a family makes. Our job is to make it simpler: honest advice, verified listings and quick answers, whether you are a first-time buyer, an NRI investing back home or an owner looking for the right tenant.",
+    "We work locality by locality, so we can tell you what a neighbourhood is really like — the commute, the schools, the markets and what similar homes have actually sold or rented for.",
+  ],
+} as const;
+
 export const CATEGORY_SHORTCUTS = [
   { label: "Apartments", href: "/buy?type=apartment", icon: "building" },
   { label: "Independent houses", href: "/buy?type=independent-house", icon: "house" },

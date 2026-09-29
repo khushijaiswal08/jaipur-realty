@@ -1,5 +1,6 @@
 import "server-only";
 
+import type { FaqScope } from "@/generated/prisma/enums";
 import { db } from "@/lib/db";
 import { placeholderImage, type ImageDTO } from "@/lib/images";
 
@@ -19,6 +20,22 @@ export async function getTestimonials(limit = 6): Promise<TestimonialDTO[]> {
     select: { id: true, name: true, location: true, context: true, quote: true, rating: true, isDemo: true },
     orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
     take: limit,
+  });
+}
+
+export interface FaqDTO {
+  id: string;
+  question: string;
+  answer: string;
+  scope: FaqScope;
+}
+
+/** Site-wide FAQs (not tied to a property/project/locality) — SPEC §42.6. */
+export async function getGeneralFaqs(): Promise<FaqDTO[]> {
+  return db.faq.findMany({
+    where: { isPublished: true, propertyId: null, projectId: null, localityId: null },
+    select: { id: true, question: true, answer: true, scope: true },
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
   });
 }
 
