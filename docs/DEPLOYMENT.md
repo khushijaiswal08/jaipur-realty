@@ -3,6 +3,9 @@
 How to run the site in production. Before going live, work through
 [LAUNCH_CHECKLIST.md](LAUNCH_CHECKLIST.md).
 
+**New to this?** Follow [DEPLOY_STEP_BY_STEP.md](DEPLOY_STEP_BY_STEP.md): GitHub + Vercel +
+Neon + Cloudflare R2, all through web dashboards.
+
 ## 1. What production needs
 
 | Need | Notes |
