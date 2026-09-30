@@ -1,0 +1,10 @@
+# Netlify build settings (see docs/DEPLOY_STEP_BY_STEP.md).
+# Netlify detects Next.js and adds its Next.js runtime automatically.
+# Migrations run first because the build pre-renders pages from the database.
+
+[build]
+  command = "npx prisma migrate deploy && npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
