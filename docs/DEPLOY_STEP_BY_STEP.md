@@ -97,7 +97,7 @@ your phone, WhatsApp and email, stays as it is):
 
 ```bash
 DATABASE_URL="(the Neon string from step 2)"
-NEXT_PUBLIC_SITE_URL="https://jaipur-realty.vercel.app"
+NEXT_PUBLIC_SITE_URL="https://your-project.vercel.app"
 NEXT_PUBLIC_ALLOW_INDEXING="false"
 AUTH_SECRET="(new random value, see below)"
 IP_HASH_SALT="(another new random value)"
